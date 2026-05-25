@@ -126,8 +126,8 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* Bottom Section - Settings Only */}
-      <div className="flex flex-col">
+      {/* Bottom Section - Settings & School Card */}
+      <div className="flex flex-col gap-4">
         <Link
           href="/settings"
           className={`flex items-center gap-4 px-4 py-3 rounded-xl text-[16px] transition-all duration-200 ${
@@ -139,6 +139,32 @@ export function Sidebar() {
           <Settings className={`w-5 h-5 ${pathname.startsWith('/settings') ? 'text-[#1E1E1E]' : 'text-[#5E5E5E]'}`} />
           <span>Settings</span>
         </Link>
+
+        {/* Delhi Public School Card */}
+        <div className="p-3 bg-[#F2F2F2] rounded-2xl border border-veda-card-border flex items-center gap-3 shadow-sm">
+          <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-gray-200 flex items-center justify-center bg-[#FDE68A]">
+            <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="16" fill="#FDE68A" />
+              <circle cx="16" cy="15" r="7" fill="#D97706" />
+              <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
+              <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
+              <circle cx="13" cy="14" r="0.75" fill="#111111" />
+              <circle cx="19" cy="14" r="0.75" fill="#111111" />
+              <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+              <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+              <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
+              <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
+            </svg>
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-semibold text-veda-text-primary truncate">
+              Delhi Public School
+            </span>
+            <span className="text-xs text-veda-text-secondary truncate">
+              Bokaro Steel City
+            </span>
+          </div>
+        </div>
       </div>
     </aside>
   );

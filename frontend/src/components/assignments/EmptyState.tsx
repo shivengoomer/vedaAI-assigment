@@ -9,7 +9,7 @@ export function EmptyState() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+    <div className="w-full bg-white border border-veda-card-border rounded-2xl p-8 md:p-16 flex flex-col items-center justify-center min-h-[70vh] text-center shadow-sm">
       {/* Custom Inline SVG Illustration: Document + Magnifying Glass + Red X */}
       <div className="relative mb-6 flex items-center justify-center">
         <svg

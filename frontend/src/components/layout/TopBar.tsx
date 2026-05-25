@@ -30,7 +30,7 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-veda-card-border px-6 flex items-center justify-between w-full flex-shrink-0 z-30">
+    <header className="h-16 bg-white border border-veda-card-border rounded-2xl px-6 flex items-center justify-between w-full flex-shrink-0 z-30 shadow-sm">
       
       {/* Left Title Area (Circular back button + Icon + Title) */}
       <div className="flex items-center gap-3">
