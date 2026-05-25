@@ -24,7 +24,7 @@
 body {
   color: var(--veda-text-primary);
   background: var(--veda-bg);
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-bricolage), sans-serif;
   overflow-x: hidden;
 }
 
