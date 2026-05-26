@@ -41,7 +41,7 @@ async function runMigration() {
     }
 
     // 2. Map all old/seeded/mock records to targetClerkId
-    const query = { $or: [{ userId: 'user_tester' }, { userId: '' }, { userId: { $exists: false } }] };
+    const query = { $or: [{ userId: 'user_tester' }, { userId: 'test_clerk_id_999' }, { userId: '' }, { userId: { $exists: false } }] };
 
     const assignRes = await Assignment.updateMany(query, { userId: targetClerkId });
     const libRes = await LibraryItem.updateMany(query, { userId: targetClerkId });
