@@ -11,6 +11,7 @@ import {
   createFolder,
   deleteItem,
 } from '../controllers/library.controller';
+import { requireAuth, syncUserMiddleware } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -42,6 +43,9 @@ const upload = multer({
     }
   },
 });
+
+// Protect all routes
+router.use(requireAuth(), syncUserMiddleware);
 
 // routes
 router.get('/', listItems);

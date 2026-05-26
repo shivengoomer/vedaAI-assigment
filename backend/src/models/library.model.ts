@@ -9,6 +9,7 @@ export interface ILibraryItem extends Document {
   size?: string;
   category: string;
   url?: string;
+  userId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ const LibraryItemSchema = new Schema(
     size: { type: String },
     category: { type: String, required: true },
     url: { type: String },
+    userId: { type: String },
   },
   {
     timestamps: true,

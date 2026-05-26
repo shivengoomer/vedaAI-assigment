@@ -3,6 +3,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import { clerkMiddleware } from '@clerk/express';
 import assignmentRoutes from './routes/assignment.routes';
 import libraryRoutes from './routes/library.routes';
 import notificationRoutes from './routes/notification.routes';
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(clerkMiddleware());
 
 // health check
 app.get('/api/health', (req, res) => {

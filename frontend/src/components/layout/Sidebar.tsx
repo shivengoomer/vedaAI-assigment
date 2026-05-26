@@ -6,21 +6,34 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Settings, Sparkles } from 'lucide-react';
 import { useAssignmentStore } from '@/store/assignmentStore';
-import { listAssignments } from '@/lib/api';
+import { listAssignments, setGlobalToken } from '@/lib/api';
+import { UserButton, useUser, useAuth } from '@clerk/nextjs';
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { assignments, setAssignments } = useAssignmentStore();
+  const { user } = useUser();
+  const { getToken } = useAuth();
 
   useEffect(() => {
-    // If assignments haven't been loaded yet, fetch them
-    if (assignments.length === 0) {
-      listAssignments()
-        .then((data) => setAssignments(data))
-        .catch((err) => console.error('Failed to load assignments for sidebar:', err));
-    }
-  }, [assignments.length, setAssignments]);
+    const updateToken = async () => {
+      try {
+        const token = await getToken();
+        setGlobalToken(token);
+        // Once token is retrieved, fetch assignments if empty
+        if (assignments.length === 0) {
+          const data = await listAssignments();
+          setAssignments(data);
+        }
+      } catch (err) {
+        console.error('Failed to load assignments or fetch token:', err);
+      }
+    };
+    updateToken();
+    const interval = setInterval(updateToken, 50 * 1000);
+    return () => clearInterval(interval);
+  }, [getToken, assignments.length, setAssignments]);
 
   const navItems = [
     {
@@ -274,29 +287,18 @@ export function Sidebar() {
           <span>Settings</span>
         </Link>
 
-        {/* Delhi Public School Card */}
-        <div className="p-3 bg-[#F2F2F2] rounded-2xl border border-veda-card-border flex items-center gap-3 shadow-sm">
-          <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-gray-200 flex items-center justify-center bg-[#FDE68A]">
-            <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="16" fill="#FDE68A" />
-              <circle cx="16" cy="15" r="7" fill="#D97706" />
-              <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
-              <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
-              <circle cx="13" cy="14" r="0.75" fill="#111111" />
-              <circle cx="19" cy="14" r="0.75" fill="#111111" />
-              <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-              <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-              <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
-              <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className="flex flex-col min-w-0">
-            <span className="text-sm font-semibold text-veda-text-primary truncate">
-              Delhi Public School
-            </span>
-            <span className="text-xs text-veda-text-secondary truncate">
-              Bokaro Steel City
-            </span>
+        {/* Clerk User Button and profile details */}
+        <div className="p-3 bg-[#F2F2F2] rounded-2xl border border-veda-card-border flex items-center justify-between gap-3 shadow-sm w-full">
+          <div className="flex items-center gap-3 min-w-0">
+            <UserButton />
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-semibold text-veda-text-primary truncate">
+                {user?.fullName || 'John Doe'}
+              </span>
+              <span className="text-[10px] text-veda-text-secondary truncate">
+                {user?.primaryEmailAddress?.emailAddress || 'tester@shiven.com'}
+              </span>
+            </div>
           </div>
         </div>
       </div>

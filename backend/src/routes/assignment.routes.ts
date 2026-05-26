@@ -13,6 +13,7 @@ import {
   regenerateAssignment,
   exportPDF,
 } from '../controllers/assignment.controller';
+import { requireAuth, syncUserMiddleware } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -46,12 +47,16 @@ const upload = multer({
   },
 });
 
-// routes
+// Public endpoints (for downloads via browser redirects)
+router.get('/:id/export-pdf', exportPDF);
+
+// Protected endpoints
+router.use(requireAuth(), syncUserMiddleware);
+
 router.post('/', upload.single('file'), createAssignment);
 router.get('/', listAssignments);
 router.get('/:id', getAssignment);
 router.delete('/:id', deleteAssignment);
 router.post('/:id/regenerate', regenerateAssignment);
-router.get('/:id/export-pdf', exportPDF);
 
 export default router;

@@ -10,6 +10,7 @@
     "seed": "ts-node-dev src/seed.ts"
   },
   "dependencies": {
+    "@clerk/express": "^2.1.21",
     "bullmq": "^5.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.0",

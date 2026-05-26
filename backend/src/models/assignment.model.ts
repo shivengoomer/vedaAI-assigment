@@ -77,6 +77,7 @@ export interface IAssignment extends Document {
   status: 'pending' | 'processing' | 'done' | 'failed';
   jobId?: string;
   result?: any;
+  userId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -100,6 +101,7 @@ const AssignmentSchema = new Schema(
     },
     jobId: { type: String },
     result: ResultSchema,
+    userId: { type: String },
   },
   {
     timestamps: true, // auto adds createdAt and updatedAt

@@ -117,8 +117,9 @@ async function processAssignment(job: Job<JobData>) {
           size: formattedSize,
           category: 'Reference Materials',
           url: refUrl,
+          userId: assignment.userId,
         });
-        log(`Reference material saved as library item: ${refItem._id}`);
+        log(`Reference material saved as library item: ${refItem._id} for user ${assignment.userId}`);
 
         // Update assignment's fileUrl to the uploaded/local URL
         assignment.fileUrl = refUrl;
@@ -302,8 +303,9 @@ async function processAssignment(job: Job<JobData>) {
         size: pdfSizeStr,
         category: 'Exports',
         url: exportUrl,
+        userId: assignment.userId,
       });
-      log(`Generated assignment saved to library: ${exportItem._id}`);
+      log(`Generated assignment saved to library: ${exportItem._id} for user ${assignment.userId}`);
     } catch (libErr) {
       logError('Failed to save generated assignment to library', libErr);
     }
@@ -316,6 +318,7 @@ async function processAssignment(job: Job<JobData>) {
         type: 'success',
         link: `/result/${assignmentId}`,
         read: false,
+        userId: assignment.userId,
       });
     } catch (notifErr) {
       logError('Failed to create success notification', notifErr);
@@ -345,6 +348,7 @@ async function processAssignment(job: Job<JobData>) {
           type: 'error',
           link: '/create',
           read: false,
+          userId: failedAssignment.userId,
         });
       }
     } catch {
