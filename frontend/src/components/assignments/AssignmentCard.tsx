@@ -7,6 +7,7 @@ import { Assignment } from '@/types/assignment';
 import { AssignmentContextMenu } from './AssignmentContextMenu';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { deleteAssignment as apiDeleteAssignment } from '@/lib/api';
+import { useToastStore } from '@/store/toastStore';
 
 interface AssignmentCardProps {
   assignment: Assignment;
@@ -15,6 +16,7 @@ interface AssignmentCardProps {
 export function AssignmentCard({ assignment }: AssignmentCardProps) {
   const router = useRouter();
   const deleteAssignment = useAssignmentStore((state) => state.deleteAssignment);
+  const { addConfirmToast, addToast } = useToastStore();
 
   // Format dates: from YYYY-MM-DD or ISO string to DD-MM-YYYY
   const formatDate = (dateStr: string) => {
@@ -51,15 +53,20 @@ export function AssignmentCard({ assignment }: AssignmentCardProps) {
     }
   };
 
-  const handleDelete = async () => {
-    if (confirm(`Are you sure you want to delete "${assignment.title}"?`)) {
-      try {
-        await apiDeleteAssignment(assignment._id);
-        deleteAssignment(assignment._id);
-      } catch (err) {
-        console.error('Failed to delete assignment:', err);
+  const handleDelete = () => {
+    addConfirmToast(
+      `Delete "${assignment.title}"? This cannot be undone.`,
+      async () => {
+        try {
+          await apiDeleteAssignment(assignment._id);
+          deleteAssignment(assignment._id);
+          addToast(`"${assignment.title}" deleted.`, 'success');
+        } catch (err) {
+          console.error('Failed to delete assignment:', err);
+          addToast('Failed to delete assignment. Please try again.', 'error');
+        }
       }
-    }
+    );
   };
 
   return (
