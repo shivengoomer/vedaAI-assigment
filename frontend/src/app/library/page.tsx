@@ -162,7 +162,7 @@ export default function LibraryPage() {
               <span>My Library</span>
             </h2>
             <p className="text-[13px] text-veda-text-secondary">
-              Browse reference files, syllabus textbooks, worksheets, and generated PDF assessment answer keys.
+              Manage your uploaded reference materials and AI-generated exported assessment PDFs.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -253,12 +253,23 @@ export default function LibraryPage() {
                       )}
                     </div>
                     <div className="flex flex-col min-w-0">
-                      <span 
-                        onClick={() => item.type !== 'folder' && handleDownload(item)}
-                        className={`font-semibold truncate transition-colors ${item.type !== 'folder' ? 'hover:text-veda-orange cursor-pointer' : ''}`}
-                      >
-                        {item.name}
-                      </span>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span 
+                          onClick={() => item.type !== 'folder' && handleDownload(item)}
+                          className={`font-semibold truncate transition-colors ${item.type !== 'folder' ? 'hover:text-veda-orange cursor-pointer' : ''}`}
+                        >
+                          {item.name}
+                        </span>
+                        {item.source === 'export' ? (
+                          <span className="flex-shrink-0 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 tracking-wide">
+                            Export
+                          </span>
+                        ) : (
+                          <span className="flex-shrink-0 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-orange-50 text-veda-orange tracking-wide">
+                            Upload
+                          </span>
+                        )}
+                      </div>
                       <span className="text-[10px] text-veda-text-secondary mt-0.5">
                         Category: {item.category} • Updated {item.updatedAt ? item.updatedAt.split('T')[0] : '--'}
                       </span>

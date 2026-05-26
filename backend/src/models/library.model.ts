@@ -10,6 +10,7 @@ export interface ILibraryItem extends Document {
   category: string;
   url?: string;
   userId?: string;
+  source: 'upload' | 'export' | 'browse';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +27,11 @@ const LibraryItemSchema = new Schema(
     category: { type: String, required: true },
     url: { type: String },
     userId: { type: String },
+    source: {
+      type: String,
+      enum: ['upload', 'export', 'browse'],
+      default: 'upload',
+    },
   },
   {
     timestamps: true,

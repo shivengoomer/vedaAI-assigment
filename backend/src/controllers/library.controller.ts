@@ -8,11 +8,14 @@ import { UTApi, UTFile } from 'uploadthing/server';
 import { env } from '../config/env';
 import { log, logError } from '../utils/logger';
 
-// GET /api/library — list all items
+// GET /api/library — list uploaded and exported items only (no browsed material)
 export async function listItems(req: Request, res: Response) {
   try {
     const userId = (req as any).auth?.userId;
-    const items = await LibraryItem.find({ userId }).sort({ createdAt: -1 });
+    const items = await LibraryItem.find({
+      userId,
+      source: { $in: ['upload', 'export'] },
+    }).sort({ createdAt: -1 });
     return res.json(items);
   } catch (error) {
     logError('Failed to list library items', error);
@@ -82,6 +85,7 @@ export async function uploadItem(req: Request, res: Response) {
       category: category || 'Reference Materials',
       url,
       userId,
+      source: 'upload',
     });
 
     log(`Library item uploaded and saved: ${item._id} for user ${userId}`);
@@ -106,6 +110,7 @@ export async function createFolder(req: Request, res: Response) {
       type: 'folder',
       category,
       userId,
+      source: 'upload',
     });
 
     log(`Library folder created: ${item._id} for user ${userId}`);

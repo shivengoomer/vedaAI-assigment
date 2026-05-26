@@ -3,6 +3,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "@/components/shared/ToastContainer";
 import { TopLoadingBar } from "@/components/layout/TopLoadingBar";
+import { ClerkTokenProvider } from "@/components/layout/ClerkTokenProvider";
 import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -30,11 +31,13 @@ export default function RootLayout({
         <body
           className={`${bricolage.variable} antialiased`}
         >
-          <Suspense fallback={null}>
-            <TopLoadingBar />
-          </Suspense>
-          {children}
-          <ToastContainer />
+          <ClerkTokenProvider>
+            <Suspense fallback={null}>
+              <TopLoadingBar />
+            </Suspense>
+            {children}
+            <ToastContainer />
+          </ClerkTokenProvider>
         </body>
       </html>
     </ClerkProvider>

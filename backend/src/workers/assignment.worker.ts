@@ -110,7 +110,7 @@ async function processAssignment(job: Job<JobData>) {
           refUrl = `/uploads/${filename}`;
         }
 
-        // Save reference file as a library item
+        // Save reference file as a library item (tagged as 'browse' — not shown in library UI)
         const refItem = await LibraryItem.create({
           name: originalName,
           type,
@@ -118,6 +118,7 @@ async function processAssignment(job: Job<JobData>) {
           category: 'Reference Materials',
           url: refUrl,
           userId: assignment.userId,
+          source: 'browse',
         });
         log(`Reference material saved as library item: ${refItem._id} for user ${assignment.userId}`);
 
@@ -304,6 +305,7 @@ async function processAssignment(job: Job<JobData>) {
         category: 'Exports',
         url: exportUrl,
         userId: assignment.userId,
+        source: 'export',
       });
       log(`Generated assignment saved to library: ${exportItem._id} for user ${assignment.userId}`);
     } catch (libErr) {

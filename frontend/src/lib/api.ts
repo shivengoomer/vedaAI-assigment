@@ -9,17 +9,51 @@ export function setGlobalToken(token: string | null) {
   globalToken = token;
 }
 
-async function getAuthHeaders(): Promise<HeadersInit> {
-  const headers: HeadersInit = {};
-  let token = globalToken;
+/**
+ * Waits for a Clerk token to be set (up to maxWaitMs).
+ * This resolves the race condition where API calls fire before
+ * ClerkTokenProvider finishes getting the JWT.
+ */
+async function waitForToken(maxWaitMs = 5000): Promise<string | null> {
+  if (globalToken) return globalToken;
 
-  if (!token && typeof window !== 'undefined') {
+  // Try directly from Clerk session as fallback
+  if (typeof window !== 'undefined') {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      token = await (window as any).Clerk?.session?.getToken() || null;
+      const directToken = await (window as any).Clerk?.session?.getToken();
+      if (directToken) {
+        globalToken = directToken;
+        return directToken;
+      }
     } catch {}
   }
 
+  // Poll until token is available or timeout
+  const start = Date.now();
+  while (!globalToken && Date.now() - start < maxWaitMs) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    if (globalToken) return globalToken;
+
+    // Try Clerk session on each poll
+    if (typeof window !== 'undefined') {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const t = await (window as any).Clerk?.session?.getToken();
+        if (t) {
+          globalToken = t;
+          return t;
+        }
+      } catch {}
+    }
+  }
+
+  return globalToken;
+}
+
+async function getAuthHeaders(): Promise<HeadersInit> {
+  const headers: HeadersInit = {};
+  const token = await waitForToken();
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -105,6 +139,7 @@ export interface LibraryItem {
   size?: string;
   category: string;
   url?: string;
+  source: 'upload' | 'export' | 'browse';
   updatedAt: string;
 }
 

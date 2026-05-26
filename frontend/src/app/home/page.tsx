@@ -1,19 +1,22 @@
 // src/app/home/page.tsx
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PillButton } from '@/components/shared/PillButton';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { useRouter } from 'next/navigation';
 import { Sparkle, ChevronRight, ClipboardCheck, Clock, Cpu } from 'lucide-react';
 import { useFormStore, QuestionConfigRow } from '@/store/formStore';
-import { listAssignments } from '@/lib/api';
+import { listAssignments, getUserProfile, UserProfile } from '@/lib/api';
+import { useUser } from '@clerk/nextjs';
 
 export default function HomePage() {
   const router = useRouter();
   const assignments = useAssignmentStore((state) => state.assignments);
   const setAssignments = useAssignmentStore((state) => state.setAssignments);
+  const { user: clerkUser } = useUser();
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   // fetch assignments from backend on page load
   useEffect(() => {
@@ -21,6 +24,13 @@ export default function HomePage() {
       .then((data) => setAssignments(data))
       .catch((err) => console.error('Failed to load assignments:', err));
   }, [setAssignments]);
+
+  // fetch user profile
+  useEffect(() => {
+    getUserProfile()
+      .then(setUserProfile)
+      .catch(() => {}); // silently fallback
+  }, []);
 
   // Statistics derived dynamically
   const activeCount = assignments.filter((a) => a.status === 'done').length;
@@ -80,7 +90,9 @@ export default function HomePage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6 md:p-8 rounded-2xl shadow-md relative overflow-hidden">
           <div className="flex flex-col gap-2 relative z-10">
             <div className="flex items-center gap-2">
-              <span className="text-xl md:text-2xl font-bold tracking-tight">Welcome Back, John Doe</span>
+              <span className="text-xl md:text-2xl font-bold tracking-tight">
+                Welcome Back, {userProfile?.firstName || clerkUser?.firstName || 'Teacher'} {userProfile?.lastName || clerkUser?.lastName || ''}
+              </span>
               <Sparkle className="w-5 h-5 text-veda-orange fill-veda-orange animate-pulse" />
             </div>
             <p className="text-xs md:text-sm text-gray-300 max-w-md leading-relaxed font-sans">
@@ -130,8 +142,13 @@ export default function HomePage() {
           <div className="bg-white border border-veda-card-border p-5 rounded-2xl shadow-sm flex flex-col justify-between min-h-[110px]">
             <span className="text-xs font-semibold text-veda-text-secondary">AI Credits Used</span>
             <div className="flex justify-between items-baseline mt-2">
-              <span className="text-2xl font-extrabold text-veda-text-primary">85<span className="text-sm font-normal text-gray-400">/100</span></span>
-              <span className="text-[10px] text-veda-orange bg-orange-50 px-1.5 py-0.5 rounded font-bold">85% Limit</span>
+              <span className="text-2xl font-extrabold text-veda-text-primary">
+                {userProfile?.creditsUsed ?? activeCount}
+                <span className="text-sm font-normal text-gray-400">/{userProfile?.creditsLimit ?? 50}</span>
+              </span>
+              <span className="text-[10px] text-veda-orange bg-orange-50 px-1.5 py-0.5 rounded font-bold">
+                {userProfile ? `${Math.round(((userProfile.creditsUsed ?? 0) / (userProfile.creditsLimit ?? 50)) * 100)}% Limit` : '—'}
+              </span>
             </div>
           </div>
 
