@@ -9,6 +9,8 @@ import { Badge } from '../shared/Badge';
 import { useNotificationStore } from '@/store/notificationStore';
 import { NotificationPanel } from './NotificationPanel';
 
+import { useUser, useClerk } from '@clerk/nextjs';
+
 interface TopBarProps {
   onMenuToggle?: () => void;
 }
@@ -18,6 +20,10 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
   const pathname = usePathname();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const userName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username || 'User' : 'John Doe';
 
   const { unreadCount, fetchNotifications } = useNotificationStore();
 
@@ -109,51 +115,68 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
             onClick={() => setShowUserDropdown(!showUserDropdown)}
             className="flex items-center gap-2.5 hover:bg-gray-50 p-1.5 rounded-lg transition-all"
           >
-            {/* Custom Yellow Avatar (Matches Figma monkey profile icon) */}
-            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-gray-200">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="16" cy="16" r="16" fill="#FDE68A" />
-                <circle cx="16" cy="15" r="7" fill="#D97706" />
-                <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
-                <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
-                <circle cx="13" cy="14" r="0.75" fill="#111111" />
-                <circle cx="19" cy="14" r="0.75" fill="#111111" />
-                <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-                <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-                <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
-                <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
-              </svg>
+            {/* Custom Yellow Avatar or Clerk User Image */}
+            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-gray-200 flex items-center justify-center bg-gray-50">
+              {user?.imageUrl ? (
+                <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
+              ) : (
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="16" cy="16" r="16" fill="#FDE68A" />
+                  <circle cx="16" cy="15" r="7" fill="#D97706" />
+                  <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
+                  <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
+                  <circle cx="13" cy="14" r="0.75" fill="#111111" />
+                  <circle cx="19" cy="14" r="0.75" fill="#111111" />
+                  <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+                  <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+                  <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
+                  <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
+                </svg>
+              )}
             </div>
             
-            <span className="text-sm font-semibold text-veda-text-primary">John Doe</span>
+            <span className="text-sm font-semibold text-veda-text-primary">{userName}</span>
             <ChevronDown className="w-4 h-4 text-veda-text-secondary" />
           </button>
 
           {/* Simple Dropdown Menu */}
           {showUserDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-veda-card-border rounded-xl shadow-lg py-2 z-50">
-              <Link href="/settings" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50">My Profile</Link>
-              <Link href="#" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50">Billing</Link>
+              <Link href="/settings" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowUserDropdown(false)}>My Profile</Link>
+              <Link href="/billing" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowUserDropdown(false)}>Billing</Link>
               <div className="border-t border-veda-card-border my-1"></div>
-              <Link href="#" className="block px-4 py-2 text-sm text-veda-orange-red hover:bg-gray-50 font-medium">Log out</Link>
+              <button 
+                onClick={async () => {
+                  setShowUserDropdown(false);
+                  await signOut();
+                  router.push('/sign-in');
+                }}
+                className="w-full text-left block px-4 py-2 text-sm text-veda-orange-red hover:bg-gray-50 font-medium"
+              >
+                Log out
+              </button>
             </div>
           )}
         </div>
 
         {/* Mobile Avatar icon */}
-        <div className="block md:hidden w-8 h-8 rounded-full overflow-hidden border border-gray-200">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="16" cy="16" r="16" fill="#FDE68A" />
-            <circle cx="16" cy="15" r="7" fill="#D97706" />
-            <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
-            <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
-            <circle cx="13" cy="14" r="0.75" fill="#111111" />
-            <circle cx="19" cy="14" r="0.75" fill="#111111" />
-            <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-            <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
-            <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
-            <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
-          </svg>
+        <div className="block md:hidden w-8 h-8 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center">
+          {user?.imageUrl ? (
+            <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
+          ) : (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="16" fill="#FDE68A" />
+              <circle cx="16" cy="15" r="7" fill="#D97706" />
+              <circle cx="13" cy="14" r="2.5" fill="#FEE2E2" />
+              <circle cx="19" cy="14" r="2.5" fill="#FEE2E2" />
+              <circle cx="13" cy="14" r="0.75" fill="#111111" />
+              <circle cx="19" cy="14" r="0.75" fill="#111111" />
+              <rect x="11" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+              <rect x="16.5" y="12.5" width="4.5" height="3" rx="1" stroke="#111111" strokeWidth="1" fill="transparent" />
+              <line x1="15.5" y1="14" x2="16.5" y2="14" stroke="#111111" strokeWidth="1" />
+              <path d="M14 18C14 18 15 19 16 19C17 19 18 18 18 18" stroke="#111111" strokeWidth="1" strokeLinecap="round" />
+            </svg>
+          )}
         </div>
 
         {/* Hamburger Menu (Mobile Only) */}

@@ -184,3 +184,56 @@ export async function clearAllNotifications() {
   if (!res.ok) throw new Error('Failed to clear notifications');
   return res.json();
 }
+
+// User Profile & Settings API methods
+export interface UserProfile {
+  _id: string;
+  clerkId: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  imageUrl?: string;
+  role?: string;
+  schoolName?: string;
+  schoolBranch?: string;
+  schoolCode?: string;
+  aiModel?: string;
+  aiStrictNCERT?: boolean;
+  aiCreativity?: number;
+  plan?: string;
+  planStatus?: string;
+  creditsUsed?: number;
+  creditsLimit?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function getUserProfile(): Promise<UserProfile> {
+  const res = await authFetch(`${BASE_URL}/users/profile`);
+  if (!res.ok) throw new Error('Failed to fetch user profile');
+  return res.json();
+}
+
+export async function updateUserProfile(data: Partial<UserProfile>): Promise<UserProfile> {
+  const res = await authFetch(`${BASE_URL}/users/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to update user profile');
+  return res.json();
+}
+
+export async function upgradeUserPlan(plan: string): Promise<UserProfile> {
+  const res = await authFetch(`${BASE_URL}/users/billing/upgrade`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ plan }),
+  });
+  if (!res.ok) throw new Error('Failed to upgrade plan');
+  return res.json();
+}

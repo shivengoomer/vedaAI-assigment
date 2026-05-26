@@ -7,6 +7,7 @@ import { clerkMiddleware } from '@clerk/express';
 import assignmentRoutes from './routes/assignment.routes';
 import libraryRoutes from './routes/library.routes';
 import notificationRoutes from './routes/notification.routes';
+import userRoutes from './routes/user.routes';
 
 const app = express();
 
@@ -32,6 +33,9 @@ app.use('/api/library', libraryRoutes);
 
 // notification routes under /api/notifications
 app.use('/api/notifications', notificationRoutes);
+
+// user routes under /api/users
+app.use('/api/users', userRoutes);
 
 // global error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
