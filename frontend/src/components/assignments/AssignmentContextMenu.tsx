@@ -43,16 +43,19 @@ export function AssignmentContextMenu({ onView, onDelete }: AssignmentContextMen
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-1 w-44 bg-white border border-veda-card-border rounded-xl shadow-lg py-1.5 z-30 animate-in fade-in slide-in-from-top-1 duration-100">
+        <div 
+          className="absolute right-0 mt-1.5 w-44 bg-white rounded-[16px] p-2 z-30 flex flex-col gap-1 border border-gray-100"
+          style={{ boxShadow: '0px 32px 48px rgba(0, 0, 0, 0.05), 0px 16px 48px rgba(0, 0, 0, 0.20)' }}
+        >
           <button
             onClick={(e) => {
               e.stopPropagation();
               setIsOpen(false);
               onView();
             }}
-            className="w-full text-left px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50 flex items-center gap-2 transition-colors"
+            className="w-full h-8 text-left px-2 rounded-[8px] text-[14px] font-semibold text-[#303030] hover:bg-gray-50 flex items-center gap-2 transition-colors"
           >
-            <Eye className="w-4 h-4 text-veda-text-secondary" />
+            <Eye className="w-4 h-4 text-gray-500" />
             <span>View Assignment</span>
           </button>
           
@@ -62,9 +65,9 @@ export function AssignmentContextMenu({ onView, onDelete }: AssignmentContextMen
               setIsOpen(false);
               onDelete();
             }}
-            className="w-full text-left px-4 py-2 text-sm text-veda-orange-red hover:bg-red-50 flex items-center gap-2 font-medium transition-colors"
+            className="w-full h-8 text-left px-2 rounded-[8px] text-[14px] font-semibold text-[#C53535] bg-[#F6F6F6] hover:bg-red-50 flex items-center gap-2 transition-colors"
           >
-            <Trash2 className="w-4 h-4 text-veda-orange-red" />
+            <Trash2 className="w-4 h-4 text-[#C53535]" />
             <span>Delete</span>
           </button>
         </div>

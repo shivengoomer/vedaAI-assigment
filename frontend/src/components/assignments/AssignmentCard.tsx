@@ -8,7 +8,6 @@ import { AssignmentContextMenu } from './AssignmentContextMenu';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { deleteAssignment as apiDeleteAssignment } from '@/lib/api';
 
-
 interface AssignmentCardProps {
   assignment: Assignment;
 }
@@ -66,21 +65,20 @@ export function AssignmentCard({ assignment }: AssignmentCardProps) {
   return (
     <div 
       onClick={handleView}
-      className="bg-veda-card border border-veda-card-border rounded-xl p-5 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[140px] relative group"
+      className="bg-white rounded-[24px] p-6 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between h-[162px] relative group"
     >
-      {/* Top row: Title & Action menu */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex flex-col gap-1 min-w-0">
-          <h4 className="text-[15px] font-bold text-veda-text-primary truncate underline underline-offset-[5px] decoration-[1.5px] decoration-gray-950 group-hover:decoration-black">
+      {/* Top Row: Title, Metadata & Action menu */}
+      <div className="flex items-start justify-between gap-4 w-full">
+        <div className="flex flex-col gap-1 min-w-0 flex-1">
+          <h4 className="text-[#303030] text-[20px] md:text-[22px] font-extrabold leading-[26px] md:leading-[28px] truncate font-sans">
             {assignment.title}
           </h4>
           
-          <div className="flex items-center gap-3">
-            {/* Subject/Class badges */}
-            <span className="text-[11px] font-semibold text-veda-orange bg-orange-50 px-2 py-0.5 rounded">
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="text-[11px] font-bold text-veda-orange bg-orange-50 px-2 py-0.5 rounded-[6px]">
               {assignment.subject}
             </span>
-            <span className="text-[11px] font-medium text-veda-text-secondary">
+            <span className="text-[11px] font-semibold text-gray-500">
               Grade {assignment.grade}
             </span>
             {assignment.status !== 'done' && (
@@ -99,15 +97,15 @@ export function AssignmentCard({ assignment }: AssignmentCardProps) {
         <AssignmentContextMenu onView={handleView} onDelete={handleDelete} />
       </div>
 
-      {/* Bottom row: Assigned Date & Due Date */}
-      <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-4 text-[13px] text-veda-text-secondary">
-        <div>
-          <span className="font-bold text-veda-text-primary">Assigned on : </span>
-          <span className="font-normal">{assignedDate}</span>
+      {/* Bottom Row: Assigned Date & Due Date */}
+      <div className="flex items-center justify-between w-full border-t border-gray-150 pt-4 mt-2">
+        <div className="flex items-center gap-1 text-[14px] md:text-[16px] text-[#303030]">
+          <span className="font-extrabold">Assigned on</span>
+          <span className="text-gray-400 font-medium">: {assignedDate}</span>
         </div>
-        <div>
-          <span className="font-bold text-veda-text-primary">Due : </span>
-          <span className="font-normal">{dueDate}</span>
+        <div className="flex items-center gap-1 text-[14px] md:text-[16px] text-[#303030]">
+          <span className="font-extrabold">Due</span>
+          <span className="text-gray-400 font-medium">: {dueDate}</span>
         </div>
       </div>
     </div>

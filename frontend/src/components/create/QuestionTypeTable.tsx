@@ -22,11 +22,13 @@ export function QuestionTypeTable({
 }: QuestionTypeTableProps) {
   return (
     <div className="flex flex-col gap-3 w-full">
-      {/* Table Header Labels (Hidden on Mobile) */}
-      <div className="hidden sm:flex items-center gap-3 text-xs font-bold text-veda-text-secondary uppercase tracking-wider px-1 pb-1 border-b border-gray-100">
-        <span className="w-[60%]">Question Type</span>
-        <span className="w-[20%] text-center pl-4">No. of Questions</span>
-        <span className="w-[20%] text-center pl-6">Marks</span>
+      {/* Table Header Labels (Visible on Desktop only, aligned with columns) */}
+      <div className="hidden md:flex items-center justify-between w-full text-[16px] font-bold text-[#303030] font-sans pr-[28px] pb-1 border-b border-gray-150/50">
+        <span className="w-[443px]">Question Type</span>
+        <div className="w-[216px] flex justify-between px-1">
+          <span className="w-[100px] text-center">No. of Questions</span>
+          <span className="w-[100px] text-center">Marks</span>
+        </div>
       </div>
 
       {/* Table Rows list */}
@@ -43,14 +45,16 @@ export function QuestionTypeTable({
         ))}
       </div>
 
-      {/* Add Button */}
-      <div className="flex justify-start mt-1.5">
+      {/* Add Button matching Figma spec */}
+      <div className="flex justify-start mt-2 pl-1">
         <button
           type="button"
           onClick={onAddRow}
-          className="flex items-center gap-1.5 text-sm font-semibold text-veda-orange hover:text-veda-orange-red transition-colors py-1 px-2 rounded-lg hover:bg-orange-50 -ml-2"
+          className="flex items-center gap-2 text-[14px] font-bold text-[#303030] hover:opacity-85 active:scale-95 transition-all font-sans"
         >
-          <Plus className="w-4 h-4" />
+          <div className="w-8 h-8 bg-[#2B2B2B] rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-sm">
+            <Plus className="w-4 h-4 stroke-[2.5]" />
+          </div>
           <span>Add Question Type</span>
         </button>
       </div>

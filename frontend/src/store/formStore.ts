@@ -13,6 +13,7 @@ interface FormState {
   subject: string;
   grade: string;
   file: File | null;
+  fileUrl: string | null;
   dueDate: string;
   questionRows: QuestionConfigRow[];
   additionalInstructions: string;
@@ -20,6 +21,7 @@ interface FormState {
   setSubject: (s: string) => void;
   setGrade: (g: string) => void;
   setFile: (f: File | null) => void;
+  setFileUrl: (url: string | null) => void;
   setDueDate: (d: string) => void;
   addRow: () => void;
   removeRow: (index: number) => void;
@@ -38,13 +40,15 @@ export const useFormStore = create<FormState>((set) => ({
   subject: '',
   grade: '',
   file: null,
+  fileUrl: null,
   dueDate: '',
   questionRows: DEFAULT_ROWS,
   additionalInstructions: '',
   setTitle: (title) => set({ title }),
   setSubject: (subject) => set({ subject }),
   setGrade: (grade) => set({ grade }),
-  setFile: (file) => set({ file }),
+  setFile: (file) => set({ file, fileUrl: null }), // selecting a file clears pre-existing URL
+  setFileUrl: (fileUrl) => set({ fileUrl, file: null }), // selecting a URL clears local file
   setDueDate: (dueDate) => set({ dueDate }),
   addRow: () => set((state) => ({
     questionRows: [...state.questionRows, { type: 'mcq', count: 5, marks: 1 }]
@@ -67,6 +71,7 @@ export const useFormStore = create<FormState>((set) => ({
     subject: '',
     grade: '',
     file: null,
+    fileUrl: null,
     dueDate: '',
     questionRows: [
       { type: 'mcq', count: 4, marks: 1 },

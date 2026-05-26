@@ -153,6 +153,9 @@ export async function createAssignment(data: CreateAssignmentDTO): Promise<{ ass
     if (data.file) {
       formData.append('file', data.file);
     }
+    if (data.fileUrl) {
+      formData.append('fileUrl', data.fileUrl);
+    }
 
     const res = await fetch(`${BASE_URL}/assignments`, {
       method: 'POST',
@@ -392,4 +395,129 @@ export function simulateJobCompletion(jobId: string, onUpdate: (progress: number
     onUpdate(step.progress, step.msg, step.status);
     currentStep++;
   }, 1000);
+}
+
+export interface LibraryItem {
+  _id: string;
+  name: string;
+  type: 'folder' | 'pdf' | 'doc';
+  size?: string;
+  category: string;
+  url?: string;
+  updatedAt: string;
+}
+
+export async function listLibraryItems(): Promise<LibraryItem[]> {
+  if (await isServerOnline()) {
+    const res = await fetch(`${BASE_URL}/library`);
+    if (!res.ok) throw new Error('Failed to fetch library items');
+    return res.json();
+  } else {
+    // Fallback simulation or localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('veda_library');
+      if (!saved) {
+        const initial: LibraryItem[] = [
+          { _id: 'lib-1', name: 'Science Grade 8 - Chapter 14', type: 'folder', category: 'Syllabus Chapters', updatedAt: '2026-05-24' },
+          { _id: 'lib-2', name: 'English Grade 5 - Prepositions', type: 'folder', category: 'Worksheets', updatedAt: '2026-05-23' },
+          { _id: 'lib-3', name: 'NCERT Textbook - Electric Effects.pdf', type: 'pdf', size: '2.4 MB', category: 'Syllabus Chapters', updatedAt: '2026-05-20', url: 'https://utfs.io/f/dummy-textbook-electric-effects.pdf' },
+          { _id: 'lib-4', name: 'Delhi Public School Exam Instructions.doc', type: 'doc', size: '150 KB', category: 'Reference Materials', updatedAt: '2026-05-18', url: 'https://utfs.io/f/dummy-exam-instructions.doc' },
+          { _id: 'lib-5', name: 'Electricity Chapter 14 Quiz (Final Export).pdf', type: 'pdf', size: '1.2 MB', category: 'Exports', updatedAt: '2026-05-20', url: 'https://utfs.io/f/dummy-electricity-quiz.pdf' },
+          { _id: 'lib-6', name: 'English Grammar Prepositions Test.pdf', type: 'pdf', size: '890 KB', category: 'Exports', updatedAt: '2026-05-22', url: 'https://utfs.io/f/dummy-prepositions-test.pdf' }
+        ];
+        localStorage.setItem('veda_library', JSON.stringify(initial));
+        return initial;
+      }
+      return JSON.parse(saved);
+    }
+    return [];
+  }
+}
+
+export async function uploadLibraryItem(file: File, category: string): Promise<LibraryItem> {
+  if (await isServerOnline()) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('category', category);
+
+    const res = await fetch(`${BASE_URL}/library`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!res.ok) throw new Error('Failed to upload library item');
+    return res.json();
+  } else {
+    // Simulated fallback
+    const id = `lib-${Date.now()}`;
+    const sizeStr = file.size >= 1024 * 1024 
+      ? `${(file.size / (1024 * 1024)).toFixed(1)} MB` 
+      : `${(file.size / 1024).toFixed(0)} KB`;
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    const type = ext === 'pdf' ? 'pdf' : 'doc';
+    const newItem: LibraryItem = {
+      _id: id,
+      name: file.name,
+      type,
+      size: sizeStr,
+      category,
+      url: window.URL.createObjectURL(file), // Local dummy URL
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('veda_library');
+      const list = saved ? JSON.parse(saved) : [];
+      list.push(newItem);
+      localStorage.setItem('veda_library', JSON.stringify(list));
+    }
+    return newItem;
+  }
+}
+
+export async function createLibraryFolder(name: string, category: string): Promise<LibraryItem> {
+  if (await isServerOnline()) {
+    const res = await fetch(`${BASE_URL}/library/folder`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, category }),
+    });
+    if (!res.ok) throw new Error('Failed to create library folder');
+    return res.json();
+  } else {
+    // Simulated fallback
+    const id = `lib-${Date.now()}`;
+    const newItem: LibraryItem = {
+      _id: id,
+      name,
+      type: 'folder',
+      category,
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('veda_library');
+      const list = saved ? JSON.parse(saved) : [];
+      list.push(newItem);
+      localStorage.setItem('veda_library', JSON.stringify(list));
+    }
+    return newItem;
+  }
+}
+
+export async function deleteLibraryItem(id: string): Promise<void> {
+  if (await isServerOnline()) {
+    const res = await fetch(`${BASE_URL}/library/${id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete library item');
+  } else {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('veda_library');
+      if (saved) {
+        let list: LibraryItem[] = JSON.parse(saved);
+        list = list.filter((item) => item._id !== id);
+        localStorage.setItem('veda_library', JSON.stringify(list));
+      }
+    }
+  }
 }

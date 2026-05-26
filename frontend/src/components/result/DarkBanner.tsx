@@ -8,9 +8,10 @@ import { exportAssignmentPDF } from '@/lib/api';
 interface DarkBannerProps {
   assignmentId: string;
   aiMessage: string;
+  pdfUrl?: string;
 }
 
-export function DarkBanner({ assignmentId, aiMessage }: DarkBannerProps) {
+export function DarkBanner({ assignmentId, aiMessage, pdfUrl }: DarkBannerProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
@@ -18,15 +19,21 @@ export function DarkBanner({ assignmentId, aiMessage }: DarkBannerProps) {
     setIsDownloading(true);
     setDownloadSuccess(false);
     try {
-      const blob = await exportAssignmentPDF(assignmentId);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `VedaAI_Assessment_${assignmentId}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
+      if (pdfUrl) {
+        // Open UploadThing URL directly in new tab (bypasses CORS restrictions)
+        window.open(pdfUrl, '_blank');
+      } else {
+        // Fallback: Generate on-the-fly from the backend API
+        const blob = await exportAssignmentPDF(assignmentId);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VedaAI_Assessment_${assignmentId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      }
       
       setDownloadSuccess(true);
       setTimeout(() => setDownloadSuccess(false), 2000);
@@ -39,10 +46,11 @@ export function DarkBanner({ assignmentId, aiMessage }: DarkBannerProps) {
   };
 
   return (
-    <div className="w-full bg-veda-dark-banner text-white p-5 md:p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
-      
+    <div 
+      className="w-full bg-[#181818]/85 backdrop-blur-md text-white p-8 rounded-[32px] flex flex-col items-start gap-6 shadow-lg border border-white/5"
+    >
       {/* AI Message */}
-      <p className="text-sm md:text-base font-medium leading-relaxed max-w-2xl">
+      <p className="text-[20px] font-bold leading-8 text-white font-sans max-w-4xl">
         {aiMessage}
       </p>
 
@@ -50,18 +58,16 @@ export function DarkBanner({ assignmentId, aiMessage }: DarkBannerProps) {
       <button
         onClick={handleDownload}
         disabled={isDownloading}
-        className="flex items-center justify-center gap-2 bg-white text-veda-btn-primary hover:bg-gray-100 disabled:bg-gray-200 disabled:text-gray-400 rounded-full px-5 py-2.5 text-sm font-bold transition-all flex-shrink-0 active:scale-95 self-stretch md:self-auto shadow-sm"
+        className="flex items-center justify-center gap-2 bg-white text-[#303030] hover:bg-gray-100 disabled:bg-gray-200 disabled:text-gray-400 rounded-full px-6 h-[44px] text-[16px] font-semibold transition-all flex-shrink-0 active:scale-95 shadow-sm"
       >
         {isDownloading ? (
-          <Loader2 className="w-4 h-4 animate-spin text-veda-btn-primary" />
+          <Loader2 className="w-5 h-5 animate-spin text-[#303030]" />
         ) : downloadSuccess ? (
-          <Check className="w-4 h-4 text-green-600" />
+          <Check className="w-5 h-5 text-green-600" />
         ) : (
-          <FileDown className="w-4 h-4 text-veda-btn-primary" />
+          <FileDown className="w-5 h-5 text-[#303030]" />
         )}
-        
-        {/* Hide text on mobile, show only icon */}
-        <span className="hidden sm:inline">
+        <span>
           {isDownloading ? 'Downloading...' : downloadSuccess ? 'Downloaded' : 'Download as PDF'}
         </span>
       </button>

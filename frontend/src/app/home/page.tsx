@@ -1,17 +1,26 @@
 // src/app/home/page.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PillButton } from '@/components/shared/PillButton';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { useRouter } from 'next/navigation';
 import { Sparkle, ChevronRight, ClipboardCheck, Clock, Cpu } from 'lucide-react';
 import { useFormStore, QuestionConfigRow } from '@/store/formStore';
+import { listAssignments } from '@/lib/api';
 
 export default function HomePage() {
   const router = useRouter();
   const assignments = useAssignmentStore((state) => state.assignments);
+  const setAssignments = useAssignmentStore((state) => state.setAssignments);
+
+  // fetch assignments from backend on page load
+  useEffect(() => {
+    listAssignments()
+      .then((data) => setAssignments(data))
+      .catch((err) => console.error('Failed to load assignments:', err));
+  }, [setAssignments]);
 
   // Statistics derived dynamically
   const activeCount = assignments.filter((a) => a.status === 'done').length;

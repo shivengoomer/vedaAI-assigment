@@ -34,32 +34,29 @@ export function ExamPaper({ assignment }: ExamPaperProps) {
 
   return (
     <div 
-      className="bg-white border border-veda-card-border rounded-xl shadow-sm p-6 md:p-12 w-full max-w-4xl mx-auto flex flex-col gap-6 text-black font-sans relative"
+      className="bg-white rounded-[32px] shadow-sm p-8 md:p-12 w-full max-w-4xl mx-auto flex flex-col gap-6 text-[#303030] font-sans relative"
       style={{ minHeight: '297mm' }} // Simulates A4 height proportion
     >
       
-      <div className="flex flex-col items-center text-center gap-1.5 border-b-2 border-black pb-4">
-        <h2 className="text-[22px] font-bold tracking-tight text-black leading-tight">
+      {/* Figma Title Header block */}
+      <div className="flex flex-col items-center text-center gap-1.5 pb-4">
+        <h2 className="text-[#303030] text-[28px] md:text-[32px] font-bold leading-tight font-sans">
           {result.schoolName || 'Delhi Public School, Sector-4, Bokaro'}
         </h2>
-        <div className="text-[14px] text-black font-semibold mt-0.5">
-          Subject: {result.subject}
-        </div>
-        <div className="text-[14px] text-black font-semibold">
-          Class: {result.grade}
+        <div className="text-[20px] md:text-[24px] text-[#303030] font-semibold mt-1 font-sans">
+          Subject: {result.subject} &nbsp;|&nbsp; Class: {result.grade}
         </div>
       </div>
 
       {/* Info Row: Time & Marks */}
-      <div className="flex items-center justify-between text-sm text-black font-bold uppercase tracking-wider border-b border-gray-200 pb-2">
+      <div className="flex items-center justify-between text-[16px] md:text-[18px] text-[#303030] font-semibold border-b border-gray-200 pb-3 w-full">
         <span>Time Allowed: {result.timeAllowed || '45 minutes'}</span>
         <span>Maximum Marks: {result.totalMarks || assignment.totalMarks}</span>
       </div>
 
       {/* General Instruction Box */}
-      <div className="text-xs text-gray-800 border-l-4 border-gray-400 pl-3.5 py-1 my-1">
-        <span className="font-bold uppercase block mb-0.5">General Instructions:</span>
-        <p className="italic">All questions are compulsory unless stated otherwise. Write clearly and show workings where applicable.</p>
+      <div className="text-[16px] md:text-[18px] text-[#303030] font-semibold pl-1 py-0.5 w-full">
+        All questions are compulsory unless stated otherwise.
       </div>
 
       {/* Student Info Block */}

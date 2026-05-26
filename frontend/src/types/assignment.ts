@@ -17,6 +17,7 @@ export interface Assignment {
   totalMarks: number;
   additionalInstructions?: string;
   fileUrl?: string;
+  pdfUrl?: string;
   status: 'pending' | 'processing' | 'done' | 'failed';
   jobId?: string;
   result?: {
@@ -41,4 +42,5 @@ export interface CreateAssignmentDTO {
   questionRows: AssignmentRow[];
   additionalInstructions?: string;
   file?: File | null;
+  fileUrl?: string;
 }

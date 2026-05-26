@@ -6,7 +6,7 @@
   --background: #EFEFEF;
   --foreground: #111111;
 
-  --veda-bg: #EFEFEF;
+  --veda-bg: linear-gradient(180deg, #EEEEEE 0%, #DADADA 100%);
   --veda-sidebar: #FFFFFF;
   --veda-card: #FFFFFF;
   --veda-card-border: #E5E7EB;

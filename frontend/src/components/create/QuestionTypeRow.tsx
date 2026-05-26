@@ -39,94 +39,195 @@ export function QuestionTypeRow({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-3 w-full border-b border-gray-100 pb-3 sm:pb-0 sm:border-none">
-      
-      {/* Dropdown + Remove */}
-      <div className="flex items-center gap-2 w-full sm:w-[60%]">
-        
-        {/* Dropdown */}
-        <select
-          value={type}
-          onChange={(e) => onUpdate('type', e.target.value as QuestionType)}
-          className="flex-1 bg-white border border-veda-card-border rounded-xl px-4 py-2.5 text-sm text-veda-text-primary outline-none focus:border-gray-400 transition-all appearance-none cursor-pointer"
-          style={{
-            backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'right 12px center',
-            backgroundSize: '16px',
-            paddingRight: '36px'
-          }}
-        >
-          {QUESTION_TYPES.map((qt) => (
-            <option key={qt.value} value={qt.value}>
-              {qt.label}
-            </option>
-          ))}
-        </select>
+    <>
+      {/* Desktop Row View */}
+      <div className="hidden md:flex items-center justify-between w-full gap-4">
+        {/* Left Side: Select Dropdown & Remove Button */}
+        <div className="flex items-center gap-3 w-[471px] flex-shrink-0">
+          <div 
+            className="w-[443px] h-[44px] px-4 bg-white rounded-full flex items-center justify-between"
+            style={{ 
+              outline: '1.25px #DADADA solid', 
+              outlineOffset: '-1.25px' 
+            }}
+          >
+            <select
+              value={type}
+              onChange={(e) => onUpdate('type', e.target.value as QuestionType)}
+              className="w-full h-full bg-transparent text-[16px] font-medium text-[#303030] outline-none cursor-pointer appearance-none pr-8 font-sans"
+              style={{
+                backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23303030' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right center',
+                backgroundSize: '14px',
+              }}
+            >
+              {QUESTION_TYPES.map((qt) => (
+                <option key={qt.value} value={qt.value}>
+                  {qt.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* Remove Row Button */}
-        <button
-          type="button"
-          onClick={onRemove}
-          className="p-2 text-veda-text-secondary hover:text-veda-orange-red hover:bg-red-50 rounded-xl transition-all"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Steppers */}
-      <div className="flex items-center justify-between sm:justify-start gap-4 w-full sm:w-[40%]">
-        
-        {/* Counter: No. of Questions */}
-        <div className="flex items-center gap-2.5">
+          {/* Delete Row Button */}
           <button
             type="button"
-            onClick={() => handleStep('count', false)}
-            disabled={count <= 1}
-            className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-90 transition-all flex items-center justify-center text-veda-text-primary disabled:opacity-50 disabled:pointer-events-none"
+            onClick={onRemove}
+            className="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-[#C53535] active:scale-90 transition-all flex-shrink-0"
           >
-            <Minus className="w-4 h-4" />
-          </button>
-          
-          <span className="w-8 text-center text-sm font-semibold text-veda-text-primary">
-            {count}
-          </span>
-          
-          <button
-            type="button"
-            onClick={() => handleStep('count', true)}
-            className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-90 transition-all flex items-center justify-center text-veda-text-primary"
-          >
-            <Plus className="w-4 h-4" />
+            <X className="w-4 h-4 stroke-[2.5]" />
           </button>
         </div>
 
-        {/* Counter: Marks */}
-        <div className="flex items-center gap-2.5">
+        {/* Right Side: No. of Questions & Marks Steppers */}
+        <div className="w-[216px] flex justify-between flex-shrink-0">
+          {/* No. of Questions Counter */}
+          <div 
+            className="w-[100px] h-[44px] px-2 bg-white rounded-full flex items-center justify-between shadow-sm"
+            style={{ 
+              outline: '1.25px #DADADA solid', 
+              outlineOffset: '-1.25px' 
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => handleStep('count', false)}
+              disabled={count <= 1}
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 disabled:opacity-30 transition-all"
+            >
+              <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+            </button>
+            <span className="text-[16px] font-bold text-[#303030] font-sans">
+              {count}
+            </span>
+            <button
+              type="button"
+              onClick={() => handleStep('count', true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 transition-all"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+            </button>
+          </div>
+
+          {/* Marks Counter */}
+          <div 
+            className="w-[100px] h-[44px] px-2 bg-white rounded-full flex items-center justify-between shadow-sm"
+            style={{ 
+              outline: '1.25px #DADADA solid', 
+              outlineOffset: '-1.25px' 
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => handleStep('marks', false)}
+              disabled={marks <= 1}
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 disabled:opacity-30 transition-all"
+            >
+              <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+            </button>
+            <span className="text-[16px] font-bold text-[#303030] font-sans">
+              {marks}
+            </span>
+            <button
+              type="button"
+              onClick={() => handleStep('marks', true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 transition-all"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Card Row View */}
+      <div className="w-full p-3 bg-white border border-gray-150 rounded-[24px] flex flex-col gap-3 shadow-sm md:hidden">
+        {/* Top Row: Dropdown Select & Remove Button */}
+        <div className="flex items-center justify-between w-full">
+          <div className="relative flex items-center gap-1 min-w-0 max-w-[85%]">
+            <select
+              value={type}
+              onChange={(e) => onUpdate('type', e.target.value as QuestionType)}
+              className="bg-transparent text-[14px] font-bold text-[#303030] outline-none cursor-pointer appearance-none pr-6 font-sans"
+              style={{
+                backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23303030' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right center',
+                backgroundSize: '14px',
+              }}
+            >
+              {QUESTION_TYPES.map((qt) => (
+                <option key={qt.value} value={qt.value}>
+                  {qt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button
             type="button"
-            onClick={() => handleStep('marks', false)}
-            disabled={marks <= 1}
-            className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-90 transition-all flex items-center justify-center text-veda-text-primary disabled:opacity-50 disabled:pointer-events-none"
+            onClick={onRemove}
+            className="w-7 h-7 rounded-full hover:bg-red-50 flex items-center justify-center text-gray-400 hover:text-[#C53535] transition-all"
           >
-            <Minus className="w-4 h-4" />
-          </button>
-          
-          <span className="w-8 text-center text-sm font-semibold text-veda-text-primary">
-            {marks}
-          </span>
-          
-          <button
-            type="button"
-            onClick={() => handleStep('marks', true)}
-            className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-90 transition-all flex items-center justify-center text-veda-text-primary"
-          >
-            <Plus className="w-4 h-4" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-      </div>
+        {/* Bottom Row: Steppers in #F0F0F0 rounded capsule container */}
+        <div className="w-full p-2 bg-[#F0F0F0] rounded-[24px] flex items-center gap-3">
+          <div className="flex-1 flex flex-col items-center gap-1">
+            <span className="text-[12px] font-bold text-[#303030] font-sans text-center">
+              No. of Questions
+            </span>
+            <div className="w-full p-1 bg-white rounded-full flex items-center justify-between h-[36px] px-2 shadow-sm">
+              <button
+                type="button"
+                onClick={() => handleStep('count', false)}
+                disabled={count <= 1}
+                className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 disabled:opacity-30 transition-all"
+              >
+                <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+              <span className="text-[15px] font-bold text-[#303030] font-sans">
+                {count}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleStep('count', true)}
+                className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 transition-all"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+            </div>
+          </div>
 
-    </div>
+          <div className="flex-1 flex flex-col items-center gap-1">
+            <span className="text-[12px] font-bold text-[#303030] font-sans text-center">
+              Marks
+            </span>
+            <div className="w-full p-1 bg-white rounded-full flex items-center justify-between h-[36px] px-2 shadow-sm">
+              <button
+                type="button"
+                onClick={() => handleStep('marks', false)}
+                disabled={marks <= 1}
+                className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 disabled:opacity-30 transition-all"
+              >
+                <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+              <span className="text-[15px] font-bold text-[#303030] font-sans">
+                {marks}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleStep('marks', true)}
+                className="w-6 h-6 rounded-full flex items-center justify-center text-[#5E5E5E] hover:bg-gray-100 transition-all"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

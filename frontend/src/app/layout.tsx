@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import { ToastContainer } from "@/components/shared/ToastContainer";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({
         className={`${bricolage.variable} antialiased`}
       >
         {children}
+        <ToastContainer />
       </body>
     </html>
   );

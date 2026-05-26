@@ -68,8 +68,11 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-[280px] h-screen bg-white border-r border-veda-card-border flex flex-col justify-between pt-10 pb-8 px-6 flex-shrink-0">
-      <div className="flex flex-col">
+    <aside
+      className="w-[304px] h-[756px] bg-white rounded-[16px] flex flex-col justify-between items-center p-6 flex-shrink-0"
+      style={{ boxShadow: '0 16px 48px 0 rgba(0, 0, 0, 0.12), 0 32px 48px 0 rgba(0, 0, 0, 0.20)' }}
+    >
+      <div className="flex flex-col w-full">
         
         {/* VedaAI Brand Logo */}
         <div className="flex items-center gap-3">
@@ -127,7 +130,7 @@ export function Sidebar() {
       </div>
 
       {/* Bottom Section - Settings & School Card */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full">
         <Link
           href="/settings"
           className={`flex items-center gap-4 px-4 py-3 rounded-xl text-[16px] transition-all duration-200 ${

@@ -39,36 +39,48 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
   }, [assignments, searchQuery, selectedSubject]);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-24 md:pb-16 relative">
-      
+    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-24 md:pb-16 relative z-10">
+      {/* Background blur bubble (Figma decorative detail) */}
+      <div 
+        className="absolute w-[1113px] h-[428px] pointer-events-none rounded-full select-none z-0 hidden md:block" 
+        style={{ 
+          left: '327px', 
+          top: '560px', 
+          background: 'rgba(76.25, 76.25, 76.25, 0.12)', 
+          filter: 'blur(200px)' 
+        }} 
+      />
+
       {/* Page Header */}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          {/* Live Indicator green dot */}
-          <span className="w-2.5 h-2.5 bg-green-500 rounded-full inline-block animate-pulse" />
-          <h2 className="text-[20px] font-bold text-veda-text-primary">
+      <div className="flex flex-col gap-1 pl-2 relative z-10">
+        <div className="flex items-center gap-3">
+          {/* Glowing Green Live Indicator dot */}
+          <div 
+            className="w-3 h-3 bg-[#4BC26D] rounded-full inline-block flex-shrink-0"
+            style={{ 
+              boxShadow: '0px 32px 48px rgba(0, 0, 0, 0.20), 0px 16px 48px rgba(0, 0, 0, 0.12)',
+              outline: '4px rgba(75.15, 193.95, 108.81, 0.40) solid' 
+            }}
+          />
+          <h2 className="text-[20px] font-bold text-[#303030] font-sans">
             Assignments
           </h2>
         </div>
-        <p className="text-[13px] text-veda-text-secondary">
+        <p className="text-[14px] text-gray-500/80 font-sans leading-tight pl-[24px]">
           Manage and create assignments for your classes.
         </p>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex items-center justify-between gap-4 bg-white p-3 rounded-xl border border-veda-card-border shadow-sm w-full relative z-20">
+      <div className="flex items-center justify-between gap-4 bg-white h-16 px-4 rounded-[20px] border border-veda-card-border shadow-sm w-full relative z-20">
         
         {/* Filter Button */}
         <div className="relative">
           <button
             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-            className={`flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg transition-colors ${
-              selectedSubject 
-                ? 'text-veda-orange bg-orange-50' 
-                : 'text-veda-text-primary hover:bg-gray-50'
-            }`}
+            className="flex items-center gap-2 text-[14px] font-extrabold text-[#A9A9A9] hover:text-[#303030] transition-colors font-sans py-2 px-1"
           >
-            <SlidersHorizontal className="w-4 h-4" />
+            <SlidersHorizontal className="w-5 h-5 text-[#A9A9A9]" />
             <span>
               {selectedSubject ? `Filter: ${selectedSubject}` : 'Filter By'}
             </span>
@@ -83,7 +95,7 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
                   setShowFilterDropdown(false);
                 }}
                 className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 ${
-                  selectedSubject === null ? 'font-bold text-veda-orange' : 'text-veda-text-primary'
+                  selectedSubject === null ? 'font-bold text-veda-orange' : 'text-[#303030]'
                 }`}
               >
                 All Subjects
@@ -96,7 +108,7 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
                     setShowFilterDropdown(false);
                   }}
                   className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 ${
-                    selectedSubject === sub ? 'font-bold text-veda-orange' : 'text-veda-text-primary'
+                    selectedSubject === sub ? 'font-bold text-veda-orange' : 'text-[#303030]'
                   }`}
                 >
                   {sub}
@@ -107,35 +119,33 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
         </div>
 
         {/* Search Input */}
-        <div className="relative flex-1 max-w-md">
-          <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-veda-text-hint">
-            <Search className="w-4 h-4" />
-          </span>
+        <div className="relative w-full max-w-[380px] h-[44px] flex items-center gap-3 px-4 rounded-full border border-black/20 bg-gray-50 focus-within:bg-white focus-within:border-black/40 transition-all">
+          <Search className="w-5 h-5 text-[#A9A9A9] flex-shrink-0" />
           <input
             type="text"
             placeholder="Search Assignment"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-veda-card-border rounded-full outline-none focus:bg-white focus:border-gray-400 transition-all text-veda-text-primary placeholder-veda-text-hint"
+            className="w-full h-full text-[14px] font-bold text-[#303030] placeholder-[#A9A9A9] bg-transparent outline-none font-sans"
           />
         </div>
       </div>
 
       {/* Grid of Assignment Cards */}
       {filteredAssignments.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
           {filteredAssignments.map((assignment) => (
             <AssignmentCard key={assignment._id} assignment={assignment} />
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-veda-card-border rounded-xl p-8 text-center text-veda-text-secondary text-sm">
+        <div className="bg-white border border-veda-card-border rounded-xl p-8 text-center text-veda-text-secondary text-sm relative z-10">
           No assignments match your filter/search criteria.
         </div>
       )}
 
       {/* Bottom Sticky Action Bar (Desktop only, when assignments exist) */}
-      <div className="hidden md:flex fixed bottom-6 left-[280px] right-0 items-center justify-center pointer-events-none z-10">
+      <div className="hidden md:flex fixed bottom-6 left-[304px] right-0 items-center justify-center pointer-events-none z-10">
         <div className="pointer-events-auto">
           <PillButton
             variant="primary"

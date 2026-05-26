@@ -5,8 +5,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { MobileBottomNav } from './MobileBottomNav';
-import { useRouter } from 'next/navigation';
-import { Plus, X, Home, Users, ClipboardList, Cpu, BookOpen, Settings } from 'lucide-react';
+import { X, Home, Users, ClipboardList, Cpu, BookOpen, Settings } from 'lucide-react';
 import Link from 'next/link';
 
 interface AppShellProps {
@@ -14,7 +13,6 @@ interface AppShellProps {
 }
 
 export function AppShell({ children }: AppShellProps) {
-  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const mobileDrawerItems = [
@@ -29,7 +27,7 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <div className="flex h-screen bg-veda-bg text-veda-text-primary overflow-hidden font-sans">
       {/* Desktop Sidebar (Hidden on Mobile) */}
-      <div className="hidden md:block">
+      <div className="hidden md:flex h-full items-center pl-5 flex-shrink-0">
         <Sidebar />
       </div>
 
@@ -45,15 +43,6 @@ export function AppShell({ children }: AppShellProps) {
 
         {/* Mobile Bottom Navigation (Hidden on Desktop) */}
         <MobileBottomNav />
-
-        {/* Mobile Floating Action Button (FAB) (Hidden on Desktop) */}
-        <button
-          onClick={() => router.push('/create')}
-          className="md:hidden fixed bottom-20 right-6 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg border border-veda-card-border hover:scale-105 active:scale-95 transition-all z-40"
-          style={{ boxShadow: '0 4px 14px rgba(249, 115, 22, 0.2)' }}
-        >
-          <Plus className="w-8 h-8 text-veda-orange font-bold" />
-        </button>
 
         {/* Mobile Menu Drawer Overlay */}
         {mobileMenuOpen && (
