@@ -9,6 +9,7 @@ import { getRedisOptions } from '../config/redis';
 import { Assignment } from '../models/assignment.model';
 import { Notification } from '../models/notification.model';
 import { LibraryItem } from '../models/library.model';
+import { User } from '../models/user.model';
 import { parseFile, parseFileFromUrl } from '../services/parser.service';
 import { generateWithAI } from '../services/ai.service';
 import { generatePDF } from '../services/pdf.service';
@@ -219,10 +220,24 @@ async function processAssignment(job: Job<JobData>) {
       };
     });
 
+    // Fetch user profile dynamically to retrieve updated school name and branch location
+    let userSchoolName = 'Delhi Public School, Bokaro';
+    try {
+      const userProfile = await User.findOne({ clerkId: assignment.userId });
+      if (userProfile && userProfile.schoolName) {
+        userSchoolName = userProfile.schoolName;
+        if (userProfile.schoolBranch) {
+          userSchoolName += `, ${userProfile.schoolBranch}`;
+        }
+      }
+    } catch (profileErr) {
+      logError('Failed to fetch user school settings for assignment metadata', profileErr);
+    }
+
     // save assignment before marking done
     assignment.result = {
       aiMessage: aiResult.aiMessage || `Here is your ${assignment.subject} paper for Grade ${assignment.grade}.`,
-      schoolName: aiResult.schoolName || 'Delhi Public School, Bokaro',
+      schoolName: userSchoolName,
       subject: aiResult.subject || assignment.subject,
       grade: aiResult.grade || assignment.grade,
       timeAllowed: aiResult.timeAllowed || '45 minutes',

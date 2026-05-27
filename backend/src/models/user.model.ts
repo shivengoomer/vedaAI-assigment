@@ -38,7 +38,7 @@ const UserSchema = new Schema(
     plan: { type: String, default: 'Free Trial' },
     planStatus: { type: String, default: 'active' },
     creditsUsed: { type: Number, default: 0 },
-    creditsLimit: { type: Number, default: 50 },
+    creditsLimit: { type: Number, default: 10 },
   },
   { timestamps: true }
 );

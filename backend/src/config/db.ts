@@ -34,7 +34,7 @@ async function runMigration() {
           plan: 'Free Trial',
           planStatus: 'active',
           creditsUsed: 0,
-          creditsLimit: 50
+          creditsLimit: 10
         });
         console.log(`👤 Created user ${targetEmail} with clerkId ${targetClerkId}`);
       }

@@ -4,6 +4,7 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 import { Assignment } from '../models/assignment.model';
+import { User } from '../models/user.model';
 import { addAssignmentJob } from '../queues/assignment.queue';
 import { generatePDF } from '../services/pdf.service';
 import { broadcastToJob } from '../websocket/socket';
@@ -167,14 +168,18 @@ export async function exportPDF(req: Request, res: Response) {
       return res.status(400).json({ error: 'Assignment is not yet generated' });
     }
 
-    // If pre-uploaded PDF exists in UploadThing, redirect directly to it
-    if (assignment.pdfUrl) {
-      log(`Redirecting download request to UploadThing: ${assignment.pdfUrl}`);
-      return res.redirect(assignment.pdfUrl);
+    // Retrieve user's latest school name and branch details from profile dynamically
+    const userProfile = await User.findOne({ clerkId: assignment.userId });
+    let schoolName = assignment.result.schoolName;
+    if (userProfile && userProfile.schoolName) {
+      schoolName = userProfile.schoolName;
+      if (userProfile.schoolBranch) {
+        schoolName += `, ${userProfile.schoolBranch}`;
+      }
     }
 
     const pdfBuffer = await generatePDF({
-      schoolName: assignment.result.schoolName,
+      schoolName,
       subject: assignment.result.subject,
       grade: assignment.result.grade,
       timeAllowed: assignment.result.timeAllowed,

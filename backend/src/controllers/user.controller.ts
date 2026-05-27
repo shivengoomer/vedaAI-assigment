@@ -81,7 +81,7 @@ export async function upgradePlan(req: Request, res: Response) {
     } else if (plan === 'School Enterprise') {
       user.creditsLimit = 9999;
     } else {
-      user.creditsLimit = 50;
+      user.creditsLimit = 10;
     }
 
     await user.save();
