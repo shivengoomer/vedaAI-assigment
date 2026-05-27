@@ -9,10 +9,10 @@ import { useToastStore } from '@/store/toastStore';
 interface DarkBannerProps {
   assignmentId: string;
   aiMessage: string;
-  pdfUrl?: string;
+  assignmentTitle?: string;
 }
 
-export function DarkBanner({ assignmentId, aiMessage, pdfUrl }: DarkBannerProps) {
+export function DarkBanner({ assignmentId, aiMessage, assignmentTitle }: DarkBannerProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const { addToast } = useToastStore();
@@ -21,21 +21,20 @@ export function DarkBanner({ assignmentId, aiMessage, pdfUrl }: DarkBannerProps)
     setIsDownloading(true);
     setDownloadSuccess(false);
     try {
-      if (pdfUrl) {
-        // Open UploadThing URL directly in new tab (bypasses CORS restrictions)
-        window.open(pdfUrl, '_blank');
-      } else {
-        // Fallback: Generate on-the-fly from the backend API
-        const blob = await exportAssignmentPDF(assignmentId);
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `VedaAI_Assessment_${assignmentId}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      }
+      const fileName = assignmentTitle 
+        ? `${assignmentTitle.replace(/[^a-zA-Z0-9]/g, '_')}_paper.pdf`
+        : `VedaAI_Assessment_${assignmentId}.pdf`;
+
+      // Always generate on-the-fly from the backend API so it reflects any user settings updates (e.g. school name) dynamically
+      const blob = await exportAssignmentPDF(assignmentId);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
       
       setDownloadSuccess(true);
       setTimeout(() => setDownloadSuccess(false), 2000);

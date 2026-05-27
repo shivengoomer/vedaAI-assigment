@@ -133,7 +133,7 @@ export function CreateAssignmentForm() {
 
   return (
     <div>
-      <div className="flex flex-col gap-1">
+      <div className="hidden md:flex flex-col gap-1">
         <div className="pl-2 flex items-center gap-3">
           {/* Glowing Green Live Indicator dot */}
           <div

@@ -1,22 +1,23 @@
 // src/app/home/page.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { PillButton } from '@/components/shared/PillButton';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { useRouter } from 'next/navigation';
 import { Sparkle, ChevronRight, ClipboardCheck, Clock, Cpu } from 'lucide-react';
 import { useFormStore, QuestionConfigRow } from '@/store/formStore';
-import { listAssignments, getUserProfile, UserProfile } from '@/lib/api';
+import { listAssignments } from '@/lib/api';
 import { useUser } from '@clerk/nextjs';
+import { useProfileStore } from '@/store/profileStore';
 
 export default function HomePage() {
   const router = useRouter();
   const assignments = useAssignmentStore((state) => state.assignments);
   const setAssignments = useAssignmentStore((state) => state.setAssignments);
   const { user: clerkUser } = useUser();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const { profile: userProfile, fetchProfile } = useProfileStore();
 
   // fetch assignments from backend on page load
   useEffect(() => {
@@ -27,10 +28,8 @@ export default function HomePage() {
 
   // fetch user profile
   useEffect(() => {
-    getUserProfile()
-      .then(setUserProfile)
-      .catch(() => {}); // silently fallback
-  }, []);
+    fetchProfile();
+  }, [fetchProfile]);
 
   // Statistics derived dynamically
   const activeCount = assignments.filter((a) => a.status === 'done').length;
@@ -144,10 +143,10 @@ export default function HomePage() {
             <div className="flex justify-between items-baseline mt-2">
               <span className="text-2xl font-extrabold text-veda-text-primary">
                 {userProfile?.creditsUsed ?? activeCount}
-                <span className="text-sm font-normal text-gray-400">/{userProfile?.creditsLimit ?? 50}</span>
+                <span className="text-sm font-normal text-gray-400">/{userProfile?.creditsLimit ?? 10}</span>
               </span>
               <span className="text-[10px] text-veda-orange bg-orange-50 px-1.5 py-0.5 rounded font-bold">
-                {userProfile ? `${Math.round(((userProfile.creditsUsed ?? 0) / (userProfile.creditsLimit ?? 50)) * 100)}% Limit` : '—'}
+                {userProfile ? `${Math.round(((userProfile.creditsUsed ?? 0) / (userProfile.creditsLimit ?? 10)) * 100)}% Limit` : '—'}
               </span>
             </div>
           </div>

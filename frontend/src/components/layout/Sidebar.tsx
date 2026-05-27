@@ -97,8 +97,7 @@ export function Sidebar() {
       style={{
         display: 'flex',
         width: '304px',
-        height: '756px',
-        maxHeight: '756px',
+        height: '100%',
         padding: '24px',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -183,11 +182,12 @@ export function Sidebar() {
 
           <span
             style={{
-              color: '#303030',
+              color: 'var(--Text-Primary, #303030)',
               fontFamily: '"Bricolage Grotesque", sans-serif',
               fontSize: '28px',
+              fontStyle: 'normal',
               fontWeight: 700,
-              lineHeight: '20px',
+              lineHeight: 'var(--font-size-20, 20px)',
               letterSpacing: '-1.68px',
             }}
             className="font-sans"
@@ -229,7 +229,7 @@ export function Sidebar() {
                 key={idx}
                 href={item.path}
                 className={`flex items-center gap-2 rounded-xl text-[16px] transition-all duration-200 ${isActive
-                  ? 'bg-[#F2F2F2] text-[#1E1E1E] font-bol d'
+                  ? 'bg-[#F2F2F2] text-[#1E1E1E] font-bold'
                   : 'text-[#5E5E5E] hover:bg-gray-50 hover:text-[#1E1E1E] font-medium'
                   }`}
                 style={{

@@ -6,6 +6,7 @@ import { Assignment } from '@/types/assignment';
 import { StudentInfoBlock } from './StudentInfoBlock';
 import { SectionBlock } from './SectionBlock';
 import { AnswerKey } from './AnswerKey';
+import { useProfileStore } from '@/store/profileStore';
 
 interface ExamPaperProps {
   assignment: Assignment;
@@ -13,6 +14,7 @@ interface ExamPaperProps {
 
 export function ExamPaper({ assignment }: ExamPaperProps) {
   const result = assignment.result;
+  const { profile } = useProfileStore();
 
   // Build a map of questionId to global display numbers (1, 2, 3...)
   const questionMapping = useMemo(() => {
@@ -27,6 +29,17 @@ export function ExamPaper({ assignment }: ExamPaperProps) {
     return mapping;
   }, [result]);
 
+  const displaySchoolName = useMemo(() => {
+    if (profile?.schoolName) {
+      let name = profile.schoolName;
+      if (profile.schoolBranch) {
+        name += `, ${profile.schoolBranch}`;
+      }
+      return name;
+    }
+    return result?.schoolName || 'Delhi Public School, Sector-4, Bokaro';
+  }, [profile, result?.schoolName]);
+
   if (!result) return null;
 
   // Keep track of question number offsets for sections
@@ -40,7 +53,7 @@ export function ExamPaper({ assignment }: ExamPaperProps) {
       {/* Figma Title Header block */}
       <div className="flex flex-col items-center text-center gap-1.5 pb-4">
         <h2 className="text-[#303030] text-[28px] md:text-[32px] font-bold leading-tight font-sans">
-          {result.schoolName || 'Delhi Public School, Sector-4, Bokaro'}
+          {displaySchoolName}
         </h2>
         <div className="text-[20px] md:text-[24px] text-[#303030] font-semibold mt-1 font-sans">
           Subject: {result.subject} &nbsp;|&nbsp; Class: {result.grade}

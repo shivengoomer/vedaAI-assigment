@@ -4,13 +4,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Badge } from '../shared/Badge';
-import { useAssignmentStore } from '@/store/assignmentStore';
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const assignmentsCount = useAssignmentStore((state) => state.assignments.length);
 
   const homeIcon = (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,14 +30,14 @@ export function MobileBottomNav() {
 
   const libraryIcon = (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M17.6752 13.2417C17.145 14.4954 16.3158 15.6002 15.2601 16.4594C14.2043 17.3187 12.9541 17.9062 11.6189 18.1707C10.2836 18.4351 8.90386 18.3685 7.6003 17.9765C6.29673 17.5845 5.10903 16.8792 4.14102 15.9222C3.17302 14.9652 2.45419 13.7856 2.04737 12.4866C1.64055 11.1876 1.55814 9.80874 1.80734 8.47053C2.05653 7.13232 2.62975 5.87553 3.47688 4.81003C4.324 3.74453 5.41924 2.90277 6.66684 2.35834" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M18.3333 10C18.3333 8.90567 18.1178 7.82204 17.699 6.81099C17.2802 5.79994 16.6664 4.88129 15.8926 4.10746C15.1187 3.33364 14.2001 2.71981 13.189 2.30102C12.178 1.88224 11.0943 1.66669 10 1.66669V10H18.3333Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M10 2.08335C10 1.85324 9.81349 1.66669 9.58337 1.66669H6.66671C4.82576 1.66669 3.33337 3.15907 3.33337 5.00002V15C3.33337 16.841 4.82576 18.3334 6.66671 18.3334H13.3334C15.1743 18.3334 16.6667 16.841 16.6667 15V8.75002C16.6667 8.5199 16.4802 8.33335 16.25 8.33335H14.1667C11.8655 8.33335 10 6.46787 10 4.16669V2.08335ZM16.0162 6.66669C16.2933 6.66669 16.4925 6.39913 16.3594 6.15611C16.2464 5.94976 16.1038 5.75862 15.9345 5.58928L12.7441 2.39892C12.5748 2.22957 12.3836 2.08703 12.1773 1.97402C11.9343 1.84093 11.6667 2.04006 11.6667 2.31714V4.16669C11.6667 5.5474 12.786 6.66669 14.1667 6.66669H16.0162ZM10 9.16669C10.4603 9.16669 10.8334 9.53978 10.8334 10V11.6667H12.5C12.9603 11.6667 13.3334 12.0398 13.3334 12.5C13.3334 12.9603 12.9603 13.3334 12.5 13.3334H10.8334V15C10.8334 15.4603 10.4603 15.8334 10 15.8334C9.5398 15.8334 9.16671 15.4603 9.16671 15V13.3334H7.50004C7.0398 13.3334 6.66671 12.9603 6.66671 12.5C6.66671 12.0398 7.0398 11.6667 7.50004 11.6667H9.16671V10C9.16671 9.53978 9.5398 9.16669 10 9.16669Z" fill="currentColor"/>
     </svg>
   );
 
   const toolkitIcon = (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3.3335 16.25C3.3335 15.6974 3.55299 15.1675 3.94369 14.7768C4.33439 14.3861 4.8643 14.1666 5.41683 14.1666H16.6668M3.3335 16.25C3.3335 16.8025 3.55299 17.3324 3.94369 17.7231C4.33439 18.1138 4.8643 18.3333 5.41683 18.3333H16.6668V1.66663H5.41683C4.8643 1.66663 4.33439 1.88612 3.94369 2.27682C3.55299 2.66752 3.3335 3.19742 3.3335 3.74996V16.25Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M4.63783 8.63783L6.18377 4H7.13246L8.6784 8.63783L13.3162 10.1838V11.1325L8.6784 12.6784L7.13246 17.3162H6.18377L4.63783 12.6784L0 11.1325V10.1838L4.63783 8.63783Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M13.3878 2.38783L14.1838 0H15.1325L15.9284 2.38783L18.3162 3.18377V4.13246L15.9284 4.9284L15.1325 7.31623H14.1838L13.3878 4.9284L11 4.13246V3.18377L13.3878 2.38783Z" fill="currentColor"/>
     </svg>
   );
 
@@ -49,10 +46,9 @@ export function MobileBottomNav() {
     { 
       label: 'Assignments', 
       path: '/assignments', 
-      icon: assignmentsIcon,
-      badge: assignmentsCount
+      icon: assignmentsIcon
     },
-    { label: 'Library', path: '/library', icon: libraryIcon, badge: 4 },
+    { label: 'Library', path: '/library', icon: libraryIcon },
     { label: 'AI Toolkit', path: '/toolkit', icon: toolkitIcon },
   ];
 
@@ -91,12 +87,7 @@ export function MobileBottomNav() {
                 <div style={{ opacity: isActive ? 1 : 0.25, color: 'white' }}>
                   {tab.icon}
                 </div>
-                {tab.badge !== undefined && tab.badge > 0 && (
-                  <Badge 
-                    count={tab.badge} 
-                    className="absolute -top-1.5 -right-3 !min-w-4 !h-4 !text-[9px] !px-1 bg-[#FF5623]" 
-                  />
-                )}
+
               </div>
               <span 
                 className="text-[12px] font-semibold tracking-tight truncate w-full"

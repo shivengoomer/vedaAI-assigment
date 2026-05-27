@@ -39,7 +39,7 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
   }, [assignments, searchQuery, selectedSubject]);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-24 md:pb-16 relative z-10">
+    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto pb-24 md:pb-28 relative z-10">
       {/* Background blur bubble (Figma decorative detail) */}
       <div 
         className="absolute w-[1113px] h-[428px] pointer-events-none rounded-full select-none z-0 hidden md:block" 
@@ -145,8 +145,24 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
       )}
 
       {/* Bottom Sticky Action Bar (Desktop only, when assignments exist) */}
-      <div className="hidden md:flex fixed bottom-6 left-[254px] right-0 items-center justify-center pointer-events-none z-10">
-        <div className="pointer-events-auto">
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 items-center justify-center pointer-events-none z-10">
+        <div 
+          className="pointer-events-auto"
+          style={{
+            display: 'flex',
+            width: '100%',
+            height: '73px',
+            padding: '10px 0',
+            paddingLeft: '304px', // Offset by sidebar width to center button in main content area
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '10px',
+            background: 'linear-gradient(176deg, rgba(234, 234, 234, 0.00) 3.17%, #DADADA 81.22%)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+        >
           <PillButton
             variant="primary"
             icon={<Plus className="w-5 h-5" />}

@@ -58,7 +58,7 @@ export default function BillingPage() {
   // Safe variables with fallbacks
   const currentPlan = profile?.plan || 'Free Trial';
   const creditsUsed = profile?.creditsUsed || 0;
-  const creditsLimit = profile?.creditsLimit || 50;
+  const creditsLimit = profile?.creditsLimit || 10;
   const usagePercentage = Math.min(100, Math.round((creditsUsed / creditsLimit) * 100));
 
   const pricingTiers = [
@@ -68,7 +68,7 @@ export default function BillingPage() {
       period: 'forever',
       description: 'Test VedaAI capabilities with mock elements.',
       features: [
-        'Up to 50 total assignments',
+        'Up to 10 total assignments',
         'Standard generation speed',
         'Strict NCERT constraints',
         'Standard PDF exports',

@@ -22,7 +22,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
   };
 
   return (
-    <div className="absolute right-0 mt-2 w-80 md:w-96 bg-white border border-veda-card-border rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+    <div className="fixed md:absolute top-[72px] md:top-auto left-4 right-4 md:left-auto md:right-0 w-auto md:w-96 md:mt-2 bg-white border border-veda-card-border rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
       {/* Header */}
       <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
         <h3 className="font-bold text-[#303030]">Notifications</h3>
@@ -42,7 +42,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       </div>
 
       {/* Body */}
-      <div className="max-h-[400px] overflow-y-auto no-scrollbar">
+      <div className="max-h-[50vh] md:max-h-[400px] overflow-y-auto no-scrollbar">
         {loading && notifications.length === 0 ? (
           <div className="p-8 text-center text-sm text-gray-400">Loading notifications...</div>
         ) : notifications.length === 0 ? (
@@ -101,7 +101,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                     e.stopPropagation();
                     removeNotification(notif._id);
                   }}
-                  className="absolute top-2 right-2 p-1.5 bg-white rounded-lg shadow-sm border border-gray-100 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 p-1.5 bg-white rounded-lg shadow-sm border border-gray-100 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

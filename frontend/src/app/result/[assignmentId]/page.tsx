@@ -104,7 +104,7 @@ export default function ResultPage() {
             <DarkBanner 
               assignmentId={assignment._id} 
               aiMessage={assignment.result.aiMessage} 
-              pdfUrl={assignment.pdfUrl}
+              assignmentTitle={assignment.title}
             />
           )}
 
