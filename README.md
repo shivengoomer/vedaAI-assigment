@@ -174,17 +174,6 @@ NEXT_PUBLIC_WS_URL=ws://localhost:4000
 
 ---
 
-## 📱 Mobile-First Optimizations (Engineering Notes)
-
-During development, the VedaAI team implemented key fixes to resolve typical React/Next.js mobile responsive bugs:
-
-1.  **Double Scroll Containers**: Fixed layout height glitches on iOS Safari and Chrome by switching the parent container inside [AppShell.tsx](file:///Users/shivengoomer/Documents/Shiven/Coding/Internship/vedaAI/frontend/src/components/layout/AppShell.tsx) to `overflow-hidden` and assigning the main scrolling context to `motion.main` with permanent bottom padding (`pb-36`). This ensures forms and scroll containers never get trapped behind the sticky floating navigation.
-2.  **Instant Tap Recognition**: Replaced laggy routing hooks with standard click propagations on step control buttons. We avoided calling manual `.preventDefault()` or `.stopPropagation()` inside form navigation handlers, which was blocking Next.js route events on mobile devices.
-3.  **Keyboard Resizing & Focus Shuffling**: Ensured inputs blur properly, and implemented layout scroll padding so virtual keyboards do not shove action buttons out of the viewport or result in layout shifts.
-4.  **Toast Overlaps**: Relocated notifications from the bottom-right corner to the top-center position on mobile viewports so they do not conflict with the bottom navigation actions.
-
----
-
 ## 🛠️ Compilation & Production Builds
 
 Ensure TypeScript compiler checks pass, and package for production deployment.
