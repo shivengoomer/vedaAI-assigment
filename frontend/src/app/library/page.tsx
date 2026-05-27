@@ -178,7 +178,7 @@ export default function LibraryPage() {
         </div>
 
         {/* Categories Tabs & Search */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-3 rounded-xl border border-veda-card-border shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 md:p-3 rounded-xl border border-veda-card-border shadow-sm">
           {/* Category Tabs */}
           <div className="flex flex-wrap gap-2">
             <button

@@ -43,9 +43,9 @@ export default function SettingsPage() {
         });
 
         setSchool({
-          name: data.schoolName || 'Delhi Public School',
-          branch: data.schoolBranch || 'Bokaro Steel City, Sector-4',
-          code: data.schoolCode || 'CBSE-3430015'
+          name: data.schoolName ?? 'Delhi Public School',
+          branch: data.schoolBranch ?? 'Bokaro Steel City, Sector-4',
+          code: data.schoolCode ?? 'CBSE-3430015'
         });
       } else if (clerkUser) {
         setProfile({

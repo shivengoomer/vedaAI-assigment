@@ -8,7 +8,7 @@ export function ToastContainer() {
   const { toasts, removeToast } = useToastStore();
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div className="fixed top-20 left-1/2 -translate-x-1/2 md:top-auto md:bottom-5 md:right-5 md:left-auto md:translate-x-0 z-[9999] flex flex-col gap-3 max-w-[calc(100%-2rem)] md:max-w-sm w-full pointer-events-none">
       {toasts.map((toast) => {
         if (toast.type === 'confirm') {
           return (

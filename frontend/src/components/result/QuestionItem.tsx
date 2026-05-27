@@ -28,7 +28,7 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
             fontSize: '16px',
             fontStyle: 'normal',
             fontWeight: 700,
-            lineHeight: '240%',
+            lineHeight: '1.5',
             letterSpacing: '-0.64px',
             flexShrink: 0
           }}
@@ -42,7 +42,7 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
             fontSize: '16px',
             fontStyle: 'normal',
             fontWeight: 400,
-            lineHeight: '240%',
+            lineHeight: '1.5',
             letterSpacing: '-0.64px',
             flex: '1 0 0'
           }}
@@ -56,7 +56,7 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
               fontSize: '16px',
               fontStyle: 'normal',
               fontWeight: 700,
-              lineHeight: '240%',
+              lineHeight: '1.5',
               letterSpacing: '-0.64px',
               marginLeft: '8px'
             }}
@@ -80,7 +80,7 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
                     fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: 700,
-                    lineHeight: '240%',
+                    lineHeight: '1.5',
                     letterSpacing: '-0.64px',
                     flexShrink: 0
                   }}
@@ -94,7 +94,7 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
                     fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: 400,
-                    lineHeight: '240%',
+                    lineHeight: '1.5',
                     letterSpacing: '-0.64px',
                     flex: '1 0 0'
                   }}

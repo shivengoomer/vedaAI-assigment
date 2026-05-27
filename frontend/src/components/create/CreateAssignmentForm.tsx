@@ -70,8 +70,10 @@ export function CreateAssignmentForm() {
   }, [questionRows]);
 
   // Form submission handler
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     setErrors([]);
 
     const payload = {
@@ -88,6 +90,8 @@ export function CreateAssignmentForm() {
     const validationErrors = validateAssignmentForm(payload);
     if (validationErrors.length > 0) {
       setErrors(validationErrors);
+      // Scroll to top so the user immediately sees the validation error alert
+      window.scrollTo(0, 0);
       // If there are errors in basic details and we are on mobile step 2, take them back to step 1
       const basicFields = ['title', 'subject', 'grade', 'dueDate'];
       const hasBasicError = validationErrors.some(err => basicFields.includes(err.field));
@@ -124,6 +128,45 @@ export function CreateAssignmentForm() {
       addToast('Error initiating assignment creation. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Clean, standard mobile onClick handlers allowing normal Next.js event propagation
+  const handleMobileNext = () => {
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setMobileStep(2);
+    window.scrollTo(0, 0);
+  };
+
+  const handleMobileCancel = () => {
+    router.push('/assignments');
+  };
+
+  const handleMobilePrevious = () => {
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setMobileStep(1);
+    window.scrollTo(0, 0);
+  };
+
+  const handleMobileGenerate = () => {
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    handleSubmit();
+  };
+
+  const handleMobileBack = () => {
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    if (mobileStep === 2) {
+      setMobileStep(1);
+    } else {
+      router.push('/assignments');
     }
   };
 
@@ -169,17 +212,11 @@ export function CreateAssignmentForm() {
         </div>
 
         {/* Mobile Figma Header */}
-        <div className="flex md:hidden items-center justify-between w-full px-1 py-1">
+        <div className="flex md:hidden items-center gap-4 w-full px-4 py-2">
           <button
             type="button"
-            onClick={() => {
-              if (mobileStep === 2) {
-                setMobileStep(1);
-              } else {
-                router.push('/assignments');
-              }
-            }}
-            className="w-12 h-12 bg-white/25 rounded-full backdrop-blur-md flex items-center justify-center border border-white/25 active:scale-95 transition-all text-[#303030]"
+            onClick={handleMobileBack}
+            className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center active:scale-95 transition-all text-[#303030] shadow-sm flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
@@ -229,7 +266,7 @@ export function CreateAssignmentForm() {
         {/* Form Container */}
         <form
           onSubmit={handleSubmit}
-          className="backdrop-blur-md border border-veda-card-border shadow-sm p-8 flex flex-col gap-8 w-full"
+          className="backdrop-blur-md border border-veda-card-border shadow-sm p-4 sm:p-6 md:p-8 flex flex-col gap-6 md:gap-8 w-full"
           style={{
             borderRadius: '32px',
             background: 'rgba(255, 255, 255, 0.50)'
@@ -423,9 +460,9 @@ export function CreateAssignmentForm() {
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor" />
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </div>
@@ -441,14 +478,14 @@ export function CreateAssignmentForm() {
               <>
                 <button
                   type="button"
-                  onClick={() => router.push('/assignments')}
+                  onClick={handleMobileCancel}
                   className="px-6 py-3 text-[16px] font-medium text-[#303030] bg-white rounded-[48px] border border-gray-200 shadow-sm active:scale-95 transition-all font-sans"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  onClick={() => setMobileStep(2)}
+                  onClick={handleMobileNext}
                   className="px-6 py-3 text-[16px] font-medium text-white bg-[#181818] rounded-[48px] active:scale-95 transition-all font-sans"
                   style={{ outline: '1.50px white solid', outlineOffset: '-1.50px' }}
                 >
@@ -459,13 +496,14 @@ export function CreateAssignmentForm() {
               <>
                 <button
                   type="button"
-                  onClick={() => setMobileStep(1)}
+                  onClick={handleMobilePrevious}
                   className="px-6 py-3 text-[16px] font-medium text-[#303030] bg-white rounded-[48px] border border-gray-200 shadow-sm active:scale-95 transition-all font-sans"
                 >
                   Previous
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleMobileGenerate}
                   disabled={isSubmitting}
                   className="px-6 py-3 text-[16px] font-medium text-white bg-[#181818] rounded-[48px] active:scale-95 transition-all disabled:opacity-50 font-sans"
                   style={{ outline: '1.50px white solid', outlineOffset: '-1.50px' }}

@@ -219,8 +219,8 @@ export function FileUploadZone({
           {/* Upload Icon */}
           <div className="text-black/40">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 28.3334V11.6667M20 11.6667L13.3333 18.3334M20 11.6667L26.6667 18.3334" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M33.3333 33.3334H6.66667" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 28.3334V11.6667M20 11.6667L13.3333 18.3334M20 11.6667L26.6667 18.3334" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M33.3333 33.3334H6.66667" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
 

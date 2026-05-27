@@ -97,7 +97,7 @@ export default function ResultPage() {
       ) : (
         // Content Loaded State
         <div 
-          className="flex flex-col items-center mx-auto w-full max-w-[373px] md:max-w-[1100px] p-[9px] md:p-[20px] gap-[10px] md:gap-[12px] rounded-[40px] md:rounded-none bg-white md:bg-transparent shadow-sm md:shadow-none"
+          className="flex flex-col items-center mx-auto w-full md:max-w-[1100px] p-[9px] md:p-[20px] gap-[10px] md:gap-[12px] rounded-[40px] md:rounded-none bg-white md:bg-transparent shadow-sm md:shadow-none"
         >
           {/* AI Response Message Banner */}
           {assignment.result && (

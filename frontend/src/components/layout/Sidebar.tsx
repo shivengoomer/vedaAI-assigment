@@ -8,6 +8,7 @@ import { Settings, Sparkles } from 'lucide-react';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { listAssignments, setGlobalToken } from '@/lib/api';
 import { UserButton, useUser, useAuth } from '@clerk/nextjs';
+import { useProfileStore } from '@/store/profileStore';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export function Sidebar() {
   const { assignments, setAssignments } = useAssignmentStore();
   const { user } = useUser();
   const { getToken } = useAuth();
+  const { profile } = useProfileStore();
 
   useEffect(() => {
     const updateToken = async () => {
@@ -286,6 +288,21 @@ export function Sidebar() {
           <Settings className={`w-5 h-5 ${pathname.startsWith('/settings') ? 'text-[#1E1E1E]' : 'text-[#5E5E5E]'}`} />
           <span>Settings</span>
         </Link>
+
+        {/* School Organization Card */}
+        <div className="p-3 bg-white rounded-2xl border border-veda-card-border flex items-center gap-3 shadow-sm w-full">
+          <div className="w-8 h-8 rounded-full bg-veda-orange text-white flex items-center justify-center font-bold text-xs uppercase flex-shrink-0">
+            {profile?.schoolName ? profile.schoolName.substring(0, 2) : 'DP'}
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="text-xs font-semibold text-veda-text-primary truncate">
+              {profile?.schoolName || 'Delhi Public School'}
+            </span>
+            <span className="text-[10px] text-veda-text-secondary truncate">
+              {profile?.schoolBranch || 'Bokaro Steel City'}
+            </span>
+          </div>
+        </div>
 
         {/* Clerk User Button and profile details */}
         <div className="p-3 bg-[#F2F2F2] rounded-2xl border border-veda-card-border flex items-center justify-between gap-3 shadow-sm w-full">

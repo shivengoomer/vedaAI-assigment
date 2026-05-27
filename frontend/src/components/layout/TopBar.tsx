@@ -93,15 +93,15 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
           <div className="flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
               <rect width="28" height="28" rx="7" fill="#303030"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
-              <path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188)"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
+              <path fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
+              <path opacity="0.2" fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188)"/>
+              <path fillRule="evenodd" clipRule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
               <defs>
                 <linearGradient id="paint0_linear_2_10188" x1="10.5426" y1="6.54426" x2="10.5426" y2="22.4936" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="white" stop-opacity="0"/>
-                  <stop offset="0.33" stop-color="white" stop-opacity="0"/>
-                  <stop offset="0.76" stop-color="#0E1513"/>
-                  <stop offset="1" stop-color="#0E1513"/>
+                  <stop stopColor="white" stopOpacity="0"/>
+                  <stop offset="0.33" stopColor="white" stopOpacity="0"/>
+                  <stop offset="0.76" stopColor="#0E1513"/>
+                  <stop offset="1" stopColor="#0E1513"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -264,15 +264,15 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
           <div className="flex flex-col items-center gap-6 animate-pulse">
             <div className="w-16 h-16 bg-[#303030] rounded-2xl flex items-center justify-center shadow-lg">
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 28 28" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
-                <path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188_logout)"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
+                <path opacity="0.2" fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188_logout)"/>
+                <path fillRule="evenodd" clipRule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
                 <defs>
                   <linearGradient id="paint0_linear_2_10188_logout" x1="10.5426" y1="6.54426" x2="10.5426" y2="22.4936" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="white" stop-opacity="0"/>
-                    <stop offset="0.33" stop-color="white" stop-opacity="0"/>
-                    <stop offset="0.76" stop-color="#0E1513"/>
-                    <stop offset="1" stop-color="#0E1513"/>
+                    <stop stopColor="white" stopOpacity="0"/>
+                    <stop offset="0.33" stopColor="white" stopOpacity="0"/>
+                    <stop offset="0.76" stopColor="#0E1513"/>
+                    <stop offset="1" stopColor="#0E1513"/>
                   </linearGradient>
                 </defs>
               </svg>

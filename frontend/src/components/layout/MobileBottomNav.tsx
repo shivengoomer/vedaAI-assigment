@@ -52,21 +52,25 @@ export function MobileBottomNav() {
     { label: 'AI Toolkit', path: '/toolkit', icon: toolkitIcon },
   ];
 
+  const showFab = pathname === '/assignments';
+
   return (
     <div className="md:hidden fixed bottom-4 left-4 right-4 z-40 flex flex-col gap-3">
       {/* Floating Action Button (FAB) */}
-      <div className="flex justify-end pr-1">
-        <button
-          onClick={() => router.push('/create')}
-          className="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg border border-gray-150"
-          style={{ boxShadow: '0px 32px 48px rgba(0, 0, 0, 0.20), 0px 16px 48px rgba(0, 0, 0, 0.12)' }}
-        >
-          <div className="w-5 h-5 relative">
-            <div className="w-[15px] h-[1.67px] left-[2.5px] top-[9.17px] absolute bg-[#FF5623]" />
-            <div className="w-[15px] h-[1.67px] left-[10.83px] top-[2.5px] absolute origin-top-left rotate-90 bg-[#FF5623]" />
-          </div>
-        </button>
-      </div>
+      {showFab && (
+        <div className="flex justify-end pr-1">
+          <button
+            onClick={() => router.push('/create')}
+            className="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg border border-gray-150"
+            style={{ boxShadow: '0px 32px 48px rgba(0, 0, 0, 0.20), 0px 16px 48px rgba(0, 0, 0, 0.12)' }}
+          >
+            <div className="w-5 h-5 relative">
+              <div className="w-[15px] h-[1.67px] left-[2.5px] top-[9.17px] absolute bg-[#FF5623]" />
+              <div className="w-[15px] h-[1.67px] left-[10.83px] top-[2.5px] absolute origin-top-left rotate-90 bg-[#FF5623]" />
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Floating Bottom Navigation Bar */}
       <nav 
