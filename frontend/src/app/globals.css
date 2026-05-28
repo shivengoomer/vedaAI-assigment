@@ -19,6 +19,7 @@
   --veda-nav-active-bg: #F3F4F6;
   --veda-progress: #1A1A1A;
   --veda-dark-banner: #1A1A1A;
+  --background-bg-off-white-50: #CECECE;
 }
 
 body {
@@ -37,4 +38,14 @@ body {
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
+}
+
+/* Custom Search Bar Styles */
+.custom-search-bar {
+  border-radius: 100px !important;
+  border: 1px solid rgba(0, 0, 0, 0.20) !important;
+  transition: all 0.2s ease-in-out;
+}
+.custom-search-bar:focus-within {
+  border-color: rgba(0, 0, 0, 0.40) !important;
 }

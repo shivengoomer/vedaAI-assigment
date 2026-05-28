@@ -75,7 +75,7 @@ export function ExamPaper({ assignment }: ExamPaperProps) {
       <StudentInfoBlock grade={result.grade} />
 
       {/* Exam Sections */}
-      <div className="flex flex-col gap-6 mt-4">
+      <div className="flex flex-col gap-6 mt-4 w-full">
         {result.sections.map((section) => {
           const startNum = currentStartNum;
           // Increment offset by number of questions in current section
@@ -91,16 +91,16 @@ export function ExamPaper({ assignment }: ExamPaperProps) {
         })}
       </div>
 
+      {/* End of Question Paper Footer */}
+      <div className="text-center font-bold text-xs uppercase tracking-widest text-gray-400 mt-12 pt-4 border-t border-gray-100 w-full">
+        - End of Question Paper -
+      </div>
+
       {/* Answer Key */}
       <AnswerKey 
         answers={result.answerKey} 
         questionMapping={questionMapping} 
       />
-
-      {/* End of Question Paper Footer */}
-      <div className="text-center font-bold text-xs uppercase tracking-widest text-gray-400 mt-12 pt-4 border-t border-gray-100">
-        - End of Question Paper -
-      </div>
 
     </div>
   );

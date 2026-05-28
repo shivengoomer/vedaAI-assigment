@@ -5,7 +5,7 @@ import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Assignment } from '@/types/assignment';
 import { AssignmentCard } from './AssignmentCard';
-import { Search, SlidersHorizontal, Plus } from 'lucide-react';
+import { Search, Plus, ArrowLeft } from 'lucide-react';
 import { PillButton } from '../shared/PillButton';
 
 interface AssignmentGridProps {
@@ -51,8 +51,8 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
         }} 
       />
 
-      {/* Page Header */}
-      <div className="flex flex-col gap-1 pl-2 relative z-10">
+      {/* Page Header (Desktop) */}
+      <div className="hidden md:flex flex-col gap-1 pl-2 relative z-10">
         <div className="flex items-center gap-3">
           {/* Glowing Green Live Indicator dot */}
           <div 
@@ -71,6 +71,56 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
         </p>
       </div>
 
+      {/* Mobile Page Header */}
+      <div 
+        style={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          alignSelf: 'stretch',
+        }}
+        className="flex md:hidden w-full relative z-10"
+      >
+        <button
+          type="button"
+          onClick={() => router.push('/home')}
+          style={{
+            display: 'flex',
+            width: '48px',
+            height: '48px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '10px',
+            aspectRatio: '1/1',
+            borderRadius: '100px',
+            background: 'var(--Background-white-25, rgba(255, 255, 255, 0.25))',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+          }}
+          className="active:scale-95 transition-all text-[#303030] border border-gray-200/50 flex-shrink-0"
+        >
+          <ArrowLeft className="w-5 h-5 stroke-[2.5]" />
+        </button>
+
+        <h2
+          style={{
+            color: 'var(--Text-Primary, #303030)',
+            textAlign: 'center',
+            fontFamily: '"Bricolage Grotesque", sans-serif',
+            fontSize: '16px',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: '140%',
+            letterSpacing: '-0.64px',
+          }}
+          className="flex-1"
+        >
+          Assignments
+        </h2>
+
+        {/* Spacer to center the heading */}
+        <div className="w-12 h-12 flex-shrink-0" />
+      </div>
+
       {/* Filter and Search Bar */}
       <div className="flex items-center justify-between gap-4 bg-white h-16 px-4 rounded-[20px] border border-veda-card-border shadow-sm w-full relative z-20">
         
@@ -78,11 +128,13 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
         <div className="relative">
           <button
             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-            className="flex items-center gap-2 text-[14px] font-extrabold text-[#A9A9A9] hover:text-[#303030] transition-colors font-sans py-2 px-1"
+            className="flex items-center gap-2 text-[14px] font text-[#A9A9A9] hover:text-[#303030] transition-colors font-sans py-2 px-1"
           >
-            <SlidersHorizontal className="w-5 h-5 text-[#A9A9A9]" />
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M2.5 4.82153C2.5 3.53938 3.53938 2.5 4.82153 2.5H15.1785C16.4606 2.5 17.5 3.53938 17.5 4.82153C17.5 5.49412 17.2594 6.14453 16.8217 6.6552L14.4599 9.41062C13.5537 10.4679 13.0556 11.8144 13.0556 13.2069V15C13.0556 16.3807 11.9363 17.5 10.5556 17.5H9.44444C8.06373 17.5 6.94444 16.3807 6.94444 15V13.2069C6.94444 11.8144 6.44632 10.4679 5.54011 9.41062L3.17832 6.6552C2.7406 6.14453 2.5 5.49412 2.5 4.82153ZM4.82153 4.16667C4.45986 4.16667 4.16667 4.45986 4.16667 4.82153C4.16667 5.09627 4.26495 5.36195 4.44375 5.57054L6.80554 8.32597C7.97067 9.68529 8.61111 11.4166 8.61111 13.2069V15C8.61111 15.4602 8.98421 15.8333 9.44444 15.8333H10.5556C11.0158 15.8333 11.3889 15.4602 11.3889 15V13.2069C11.3889 11.4166 12.0293 9.68529 13.1945 8.32597L15.5563 5.57054C15.7351 5.36195 15.8333 5.09627 15.8333 4.82153C15.8333 4.45986 15.5401 4.16667 15.1785 4.16667H4.82153Z" fill="#A9A9A9"/>
+            </svg>
             <span>
-              {selectedSubject ? `Filter: ${selectedSubject}` : 'Filter By'}
+              {selectedSubject ? `Filter: ${selectedSubject}` : 'Filter '}
             </span>
           </button>
 
@@ -119,14 +171,14 @@ export function AssignmentGrid({ assignments }: AssignmentGridProps) {
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full max-w-[380px] h-[44px] flex items-center gap-3 px-4 rounded-full border border-black/20 bg-gray-50 focus-within:bg-white focus-within:border-black/40 transition-all">
+        <div className="relative w-full max-w-[380px] h-[44px] flex items-center gap-3 px-4 bg-gray-50 focus-within:bg-white custom-search-bar">
           <Search className="w-5 h-5 text-[#A9A9A9] flex-shrink-0" />
           <input
             type="text"
-            placeholder="Search Assignment"
+            placeholder="Search Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-full text-[14px] font-bold text-[#303030] placeholder-[#A9A9A9] bg-transparent outline-none font-sans"
+            className="w-full h-full text-[14px]  text-[#303030] placeholder-[#A9A9A9] bg-transparent outline-none font-sans"
           />
         </div>
       </div>

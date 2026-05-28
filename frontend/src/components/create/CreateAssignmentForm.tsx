@@ -212,50 +212,53 @@ export function CreateAssignmentForm() {
         </div>
 
         {/* Mobile Figma Header */}
-        <div className="flex md:hidden items-center gap-4 w-full px-4 py-2">
+        <div 
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignSelf: 'stretch',
+          }}
+          className="flex md:hidden w-full px-4 py-2"
+        >
           <button
             type="button"
             onClick={handleMobileBack}
-            className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center active:scale-95 transition-all text-[#303030] shadow-sm flex-shrink-0"
+            style={{
+              display: 'flex',
+              width: '48px',
+              height: '48px',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '10px',
+              aspectRatio: '1/1',
+              borderRadius: '100px',
+              background: 'var(--Background-white-25, rgba(255, 255, 255, 0.25))',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+            }}
+            className="active:scale-95 transition-all text-[#303030] border border-gray-200/50 flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
-          <div
-            className="flex-1"
+
+          <h2
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              gap: '2px',
+              color: 'var(--Text-Primary, #303030)',
+              textAlign: 'center',
+              fontFamily: '"Bricolage Grotesque", sans-serif',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: '140%',
+              letterSpacing: '-0.64px',
             }}
+            className="flex-1"
           >
-            <div className="flex items-center gap-2">
-              <div
-                className="w-2.5 h-2.5 bg-[#4BC26D] rounded-full inline-block flex-shrink-0"
-                style={{
-                  boxShadow: '0px 32px 48px rgba(0, 0, 0, 0.20), 0px 16px 48px rgba(0, 0, 0, 0.12)',
-                  outline: '3px rgba(75.15, 193.95, 108.81, 0.40) solid'
-                }}
-              />
-              <span className="text-[16px] font-bold text-[#303030] font-sans">
-                Create Assignment
-              </span>
-            </div>
-            <p
-              style={{
-                color: 'rgba(94, 94, 94, 0.80)',
-                fontFamily: '"Bricolage Grotesque", sans-serif',
-                fontSize: '11px',
-                fontWeight: 400,
-                lineHeight: '140%',
-                letterSpacing: '-0.4px',
-                marginLeft: '18px'
-              }}
-            >
-              Basic information about your assignment
-            </p>
-          </div>
+            Create Assignment
+          </h2>
+
+          {/* Spacer to center the heading */}
+          <div className="w-12 h-12 flex-shrink-0" />
         </div>
 
         {/* Form Completion Progress Bar */}

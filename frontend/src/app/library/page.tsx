@@ -2,9 +2,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { PillButton } from '@/components/shared/PillButton';
-import { BookOpen, Folder, FileText, Download, Trash, Plus, Search, Loader2, X, Check, AlertTriangle } from 'lucide-react';
+import { BookOpen, Folder, FileText, Download, Trash, Plus, Search, Loader2, X, Check, AlertTriangle, ArrowLeft } from 'lucide-react';
 import {
   listLibraryItems,
   uploadLibraryItem,
@@ -14,6 +15,7 @@ import {
 import { useToastStore } from '@/store/toastStore';
 
 export default function LibraryPage() {
+  const router = useRouter();
   const { addToast } = useToastStore();
   const [items, setItems] = useState<LibraryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -161,8 +163,8 @@ export default function LibraryPage() {
           className="hidden"
         />
 
-        {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Page Header (Desktop) */}
+        <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <h2 className="text-[20px] font-bold text-veda-text-primary flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-veda-orange" />
@@ -182,6 +184,69 @@ export default function LibraryPage() {
               Upload Material
             </PillButton>
           </div>
+        </div>
+
+        {/* Mobile Page Header */}
+        <div 
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignSelf: 'stretch',
+          }}
+          className="flex md:hidden w-full px-4 py-2"
+        >
+          <button
+            type="button"
+            onClick={() => router.push('/home')}
+            style={{
+              display: 'flex',
+              width: '48px',
+              height: '48px',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '10px',
+              aspectRatio: '1/1',
+              borderRadius: '100px',
+              background: 'var(--Background-white-25, rgba(255, 255, 255, 0.25))',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+            }}
+            className="active:scale-95 transition-all text-[#303030] border border-gray-200/50 flex-shrink-0"
+          >
+            <ArrowLeft className="w-5 h-5 stroke-[2.5]" />
+          </button>
+
+          <h2
+            style={{
+              color: 'var(--Text-Primary, #303030)',
+              textAlign: 'center',
+              fontFamily: '"Bricolage Grotesque", sans-serif',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              lineHeight: '140%',
+              letterSpacing: '-0.64px',
+            }}
+            className="flex-1"
+          >
+            My Library
+          </h2>
+
+          {/* Spacer to center the heading */}
+          <div className="w-12 h-12 flex-shrink-0" />
+        </div>
+
+        {/* Mobile Upload Button Container */}
+        <div className="flex md:hidden items-center justify-end px-4 -mt-2">
+          <PillButton
+            variant="primary"
+            disabled={loading}
+            icon={loading ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <Plus className="w-4 h-4 text-white" />}
+            onClick={handleUploadClick}
+            className="w-full justify-center"
+          >
+            Upload Material
+          </PillButton>
         </div>
 
         {/* Categories Tabs & Search */}
@@ -223,7 +288,7 @@ export default function LibraryPage() {
               placeholder="Search library assets..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full text-xs pl-9 pr-3 py-2 bg-gray-50 border border-veda-card-border rounded-full outline-none focus:bg-white focus:border-gray-400 transition-colors font-sans text-veda-text-primary"
+              className="w-full text-xs pl-9 pr-3 py-2 bg-gray-50 outline-none focus:bg-white transition-colors font-sans text-veda-text-primary custom-search-bar"
             />
           </div>
         </div>

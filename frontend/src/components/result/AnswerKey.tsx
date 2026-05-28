@@ -17,13 +17,39 @@ export function AnswerKey({ answers, questionMapping }: AnswerKeyProps) {
         Answer Key
       </h3>
 
-      <div className="flex flex-col gap-3 pl-1 text-sm text-gray-800 leading-relaxed font-normal">
+      <div className="flex flex-col gap-1 pl-1">
         {answers.map((item, idx) => {
           const number = questionMapping[item.questionId] || (idx + 1);
           return (
             <div key={item.questionId} className="flex gap-2">
-              <span className="font-semibold text-black">{number}.</span>
-              <p className="flex-1">{item.answer}</p>
+              <span 
+                style={{
+                  color: 'var(--Text-Primary, #303030)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '240%',
+                  letterSpacing: '-0.64px',
+                  flexShrink: 0
+                }}
+              >
+                {number}.
+              </span>
+              <p 
+                style={{
+                  color: 'var(--Text-Primary, #303030)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '240%',
+                  letterSpacing: '-0.64px',
+                  flex: 1
+                }}
+              >
+                {item.answer}
+              </p>
             </div>
           );
         })}

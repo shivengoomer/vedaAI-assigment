@@ -31,13 +31,13 @@ export function AppShell({ children }: AppShellProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-veda-bg text-veda-text-primary overflow-hidden font-sans">
+    <div className="flex h-screen bg-[var(--background-bg-off-white-50,#CECECE)] md:bg-veda-bg text-veda-text-primary overflow-hidden font-sans">
       {/* Desktop Sidebar (Hidden on Mobile) */}
       <div className="hidden md:flex h-full items-stretch pt-3 pl-3 pb-3 flex-shrink-0 relative z-30">
         <Sidebar />
       </div>
 
-      <div className="flex flex-col flex-1 h-full min-w-0 p-4 md:p-3 gap-4 md:gap-3">
+      <div className="flex flex-col flex-1 h-full min-w-0 px-[20px] py-[16px] md:p-3 gap-4 md:gap-3">
         <TopBar 
           onMenuToggle={() => setMobileMenuOpen(true)} 
         />
@@ -59,83 +59,99 @@ export function AppShell({ children }: AppShellProps) {
         <MobileBottomNav />
 
         {/* Mobile Menu Drawer Overlay */}
-        {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity">
-            <div className="absolute right-0 top-0 bottom-0 w-64 bg-white p-6 shadow-2xl flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between border-b border-veda-card-border pb-4 mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
-                        <rect width="28" height="28" rx="7" fill="#303030"/>
-                        <path fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
-                        <path opacity="0.2" fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188)"/>
-                        <path fillRule="evenodd" clipRule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
-                        <defs>
-                          <linearGradient id="paint0_linear_2_10188" x1="10.5426" y1="6.54426" x2="10.5426" y2="22.4936" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="white" stopOpacity="0"/>
-                            <stop offset="0.33" stopColor="white" stopOpacity="0"/>
-                            <stop offset="0.76" stopColor="#0E1513"/>
-                            <stop offset="1" stopColor="#0E1513"/>
-                          </linearGradient>
-                        </defs>
-                      </svg>
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 backdrop-blur-[2px]"
+            >
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+                onClick={(e) => e.stopPropagation()}
+                className="absolute right-0 top-0 bottom-0 w-64 bg-white p-6 shadow-2xl flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between border-b border-veda-card-border pb-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                          <rect width="28" height="28" rx="7" fill="#303030"/>
+                          <path fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="white"/>
+                          <path opacity="0.2" fillRule="evenodd" clipRule="evenodd" d="M15.9091 19.8507C15.9091 19.8507 16.4184 21.2101 16.885 21.2952H10.988C9.80005 21.2952 8.7397 20.6155 8.40001 19.3409L4.96371 9.14447C4.96371 9.14447 4.66688 7.91238 4.2002 7.7H10.2245C11.4125 7.74254 12.2185 8.16731 12.6852 9.7394L15.9091 19.8507Z" fill="url(#paint0_linear_2_10188)"/>
+                          <path fillRule="evenodd" clipRule="evenodd" d="M12.1336 19.8509C12.1336 19.8509 11.6244 21.2103 11.1577 21.2954H17.0547C18.2427 21.2954 19.303 20.6157 19.6427 19.3411L23.0368 9.14499C23.0368 9.14499 23.3336 7.9129 23.8003 7.70052H17.8182C16.6303 7.70052 15.8668 8.12529 15.4001 9.69738L12.1336 19.8509Z" fill="white"/>
+                          <defs>
+                            <linearGradient id="paint0_linear_2_10188" x1="10.5426" y1="6.54426" x2="10.5426" y2="22.4936" gradientUnits="userSpaceOnUse">
+                              <stop stopColor="white" stopOpacity="0"/>
+                              <stop offset="0.33" stopColor="white" stopOpacity="0"/>
+                              <stop offset="0.76" stopColor="#0E1513"/>
+                              <stop offset="1" stopColor="#0E1513"/>
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                      <span 
+                        style={{
+                          color: 'var(--Text-Primary, #303030)',
+                          fontFamily: 'var(--font-bricolage), "Bricolage Grotesque", sans-serif',
+                          fontSize: '20px',
+                          fontStyle: 'normal',
+                          fontWeight: 700,
+                          lineHeight: '140%',
+                          letterSpacing: '-1.2px',
+                        }}
+                      >
+                        VedaAI
+                      </span>
                     </div>
-                    <span 
-                      style={{
-                        color: 'var(--Text-Primary, #303030)',
-                        fontFamily: 'var(--font-bricolage), "Bricolage Grotesque", sans-serif',
-                        fontSize: '20px',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        lineHeight: '140%',
-                        letterSpacing: '-1.2px',
-                      }}
-                    >
-                      VedaAI
-                    </span>
-                  </div>
-                  <button 
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded hover:bg-gray-100"
-                  >
-                    <X className="w-6 h-6 text-veda-text-secondary" />
-                  </button>
-                </div>
-                
-                <nav className="flex flex-col gap-3">
-                  {mobileDrawerItems.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={item.path}
+                    <button 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 text-veda-text-secondary hover:text-veda-text-primary py-2 text-sm font-medium transition-colors"
+                      className="p-1 rounded hover:bg-gray-100"
                     >
-                      {item.icon}
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-
-              <div className="border-t border-veda-card-border pt-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-veda-orange text-white flex items-center justify-center font-bold text-xs uppercase">
-                    {profile?.schoolName ? profile.schoolName.substring(0, 2) : 'DP'}
+                      <X className="w-6 h-6 text-veda-text-secondary" />
+                    </button>
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-xs font-semibold text-veda-text-primary truncate">
-                      {profile?.schoolName || 'Delhi Public School'}
-                    </span>
-                    <span className="text-[10px] text-veda-text-secondary truncate">
-                      {profile?.schoolBranch || 'Bokaro Steel City'}
-                    </span>
+                  
+                  <nav className="flex flex-col gap-3">
+                    {mobileDrawerItems.map((item, idx) => (
+                      <Link
+                        key={idx}
+                        href={item.path}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 text-veda-text-secondary hover:text-veda-text-primary py-2 text-sm font-medium transition-colors"
+                      >
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
+
+                <div className="border-t border-veda-card-border pt-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-veda-orange text-white flex items-center justify-center font-bold text-xs uppercase">
+                      {profile?.schoolName ? profile.schoolName.substring(0, 2) : 'DP'}
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-xs font-semibold text-veda-text-primary truncate">
+                        {profile?.schoolName || 'Delhi Public School'}
+                      </span>
+                      <span className="text-[10px] text-veda-text-secondary truncate">
+                        {profile?.schoolBranch || 'Bokaro Steel City'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

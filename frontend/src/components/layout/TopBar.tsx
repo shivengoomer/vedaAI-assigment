@@ -1,7 +1,7 @@
 // src/components/layout/TopBar.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Bell, ChevronDown, Menu, ArrowLeft, LayoutGrid, Sparkle } from 'lucide-react';
@@ -19,7 +19,32 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showMobileUserDropdown, setShowMobileUserDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileUserDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        userDropdownRef.current && 
+        !userDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowUserDropdown(false);
+      }
+      if (
+        mobileUserDropdownRef.current && 
+        !mobileUserDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowMobileUserDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const { user, isSignedIn, isLoaded } = useUser();
   const { signOut } = useClerk();
@@ -63,7 +88,7 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
   return (
     <>
       <header 
-        className="flex items-center justify-between rounded-[16px] bg-white md:bg-white/75 border border-veda-card-border z-30 shadow-sm mx-auto w-full max-w-[373px] md:max-w-[1100px] h-[56px] pl-[12px] pr-[16px] md:pl-[24px] md:pr-[12px] gap-[10px] shrink-0"
+        className="flex items-center justify-between rounded-[16px] bg-white md:bg-white/75 border border-veda-card-border z-30 shadow-sm mx-auto w-full md:max-w-[1100px] h-[56px] pl-[12px] pr-[16px] md:pl-[24px] md:pr-[12px] gap-[10px] shrink-0"
       >
         {/* 1. Desktop Left Title Area (Circular back button + Icon + Title) */}
         <div className="hidden md:flex items-center gap-3">
@@ -145,7 +170,7 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
           </div>
   
           {/* Desktop Profile Dropdown */}
-          <div className="relative">
+          <div ref={userDropdownRef} className="relative">
             <button 
               onClick={() => setShowUserDropdown(!showUserDropdown)}
               className="flex items-center gap-2.5 hover:bg-gray-50 p-1.5 rounded-lg transition-all"
@@ -176,7 +201,13 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
   
             {/* Simple Dropdown Menu */}
             {showUserDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-veda-card-border rounded-xl shadow-lg py-2 z-50">
+              <div 
+                style={{
+                  borderRadius: '12px',
+                  boxShadow: '0 16px 48px 0 rgba(0, 0, 0, 0.12), 0 32px 48px 0 rgba(0, 0, 0, 0.20)',
+                }}
+                className="absolute right-0 mt-2 w-48 bg-white border border-veda-card-border py-2 z-50"
+              >
                 <Link href="/settings" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowUserDropdown(false)}>My Profile</Link>
                 <Link href="/billing" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowUserDropdown(false)}>Billing</Link>
                 <div className="border-t border-veda-card-border my-1"></div>
@@ -223,22 +254,53 @@ export function TopBar({ onMenuToggle }: TopBarProps) {
           </div>
   
           {/* Mobile User Avatar */}
-          <div className="flex w-8 h-8 rounded-full overflow-hidden border border-gray-200 bg-[#F6F6F6] justify-center items-center gap-[10px] aspect-square flex-shrink-0">
-            {user?.imageUrl ? (
-              <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
-            ) : (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="12" fill="#FDE68A" />
-                <circle cx="12" cy="11.25" r="5.25" fill="#D97706" />
-                <circle cx="9.75" cy="10.5" r="1.875" fill="#FEE2E2" />
-                <circle cx="14.25" cy="10.5" r="1.875" fill="#FEE2E2" />
-                <circle cx="9.75" cy="10.5" r="0.56" fill="#111111" />
-                <circle cx="14.25" cy="10.5" r="0.56" fill="#111111" />
-                <rect x="8.25" y="9.375" width="3.375" height="2.25" rx="0.75" stroke="#111111" strokeWidth="0.75" fill="transparent" />
-                <rect x="12.375" y="9.375" width="3.375" height="2.25" rx="0.75" stroke="#111111" strokeWidth="0.75" fill="transparent" />
-                <line x1="11.625" y1="10.5" x2="12.375" y2="10.5" stroke="#111111" strokeWidth="0.75" />
-                <path d="M10.5 13.5C10.5 13.5 11.25 14.25 12 14.25C12.75 14.25 13.5 13.5 13.5 13.5" stroke="#111111" strokeWidth="0.75" strokeLinecap="round" />
-              </svg>
+          <div ref={mobileUserDropdownRef} className="relative">
+            <button 
+              onClick={() => setShowMobileUserDropdown(!showMobileUserDropdown)}
+              className="flex w-8 h-8 rounded-full overflow-hidden border border-gray-200 bg-[#F6F6F6] justify-center items-center gap-[10px] aspect-square flex-shrink-0 active:scale-95 transition-all focus:outline-none"
+            >
+              {user?.imageUrl ? (
+                <img src={user.imageUrl} alt={userName} className="w-full h-full object-cover" />
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" fill="#FDE68A" />
+                  <circle cx="12" cy="11.25" r="5.25" fill="#D97706" />
+                  <circle cx="9.75" cy="10.5" r="1.875" fill="#FEE2E2" />
+                  <circle cx="14.25" cy="10.5" r="1.875" fill="#FEE2E2" />
+                  <circle cx="9.75" cy="10.5" r="0.56" fill="#111111" />
+                  <circle cx="14.25" cy="10.5" r="0.56" fill="#111111" />
+                  <rect x="8.25" y="9.375" width="3.375" height="2.25" rx="0.75" stroke="#111111" strokeWidth="0.75" fill="transparent" />
+                  <rect x="12.375" y="9.375" width="3.375" height="2.25" rx="0.75" stroke="#111111" strokeWidth="0.75" fill="transparent" />
+                  <line x1="11.625" y1="10.5" x2="12.375" y2="10.5" stroke="#111111" strokeWidth="0.75" />
+                  <path d="M10.5 13.5C10.5 13.5 11.25 14.25 12 14.25C12.75 14.25 13.5 13.5 13.5 13.5" stroke="#111111" strokeWidth="0.75" strokeLinecap="round" />
+                </svg>
+              )}
+            </button>
+
+            {/* Simple Dropdown Menu for Mobile */}
+            {showMobileUserDropdown && (
+              <div 
+                style={{
+                  borderRadius: '12px',
+                  boxShadow: '0 16px 48px 0 rgba(0, 0, 0, 0.12), 0 32px 48px 0 rgba(0, 0, 0, 0.20)',
+                }}
+                className="absolute right-0 mt-2 w-48 bg-white border border-veda-card-border py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+              >
+                <Link href="/settings" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowMobileUserDropdown(false)}>My Profile</Link>
+                <Link href="/billing" className="block px-4 py-2 text-sm text-veda-text-primary hover:bg-gray-50" onClick={() => setShowMobileUserDropdown(false)}>Billing</Link>
+                <div className="border-t border-veda-card-border my-1"></div>
+                <button 
+                  onClick={async () => {
+                    setShowMobileUserDropdown(false);
+                    setIsLoggingOut(true);
+                    await signOut();
+                    router.push('/sign-in');
+                  }}
+                  className="w-full text-left block px-4 py-2 text-sm text-veda-orange-red hover:bg-gray-50 font-medium"
+                >
+                  Log out
+                </button>
+              </div>
             )}
           </div>
   

@@ -17,18 +17,18 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
     '[Challenging]';
 
   return (
-    <div className="flex flex-col gap-2 w-full text-left" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <div className="flex flex-col gap-1 w-full text-left" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
       
       {/* Question Text Line */}
       <div className="flex items-start gap-1.5 w-full">
         <span 
           style={{
             color: 'var(--Text-Primary, #303030)',
-            fontFamily: 'Inter',
+            fontFamily: 'var(--font-inter), sans-serif',
             fontSize: '16px',
             fontStyle: 'normal',
             fontWeight: 700,
-            lineHeight: '1.5',
+            lineHeight: '240%',
             letterSpacing: '-0.64px',
             flexShrink: 0
           }}
@@ -38,13 +38,13 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
         <div 
           style={{
             color: 'var(--Text-Primary, #303030)',
-            fontFamily: 'Inter',
+            fontFamily: 'var(--font-inter), sans-serif',
             fontSize: '16px',
             fontStyle: 'normal',
             fontWeight: 400,
-            lineHeight: '1.5',
+            lineHeight: '240%',
             letterSpacing: '-0.64px',
-            flex: '1 0 0'
+            flex: 1
           }}
         >
           <span className="mr-1.5" style={{ fontWeight: 400 }}>{difficultyLabel}</span>
@@ -52,11 +52,11 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
           <span 
             style={{
               color: 'var(--Text-Primary, #303030)',
-              fontFamily: 'Inter',
+              fontFamily: 'var(--font-inter), sans-serif',
               fontSize: '16px',
               fontStyle: 'normal',
               fontWeight: 700,
-              lineHeight: '1.5',
+              lineHeight: '240%',
               letterSpacing: '-0.64px',
               marginLeft: '8px'
             }}
@@ -76,11 +76,11 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
                 <span 
                   style={{
                     color: 'var(--Text-Primary, #303030)',
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-inter), sans-serif',
                     fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: 700,
-                    lineHeight: '1.5',
+                    lineHeight: '240%',
                     letterSpacing: '-0.64px',
                     flexShrink: 0
                   }}
@@ -90,13 +90,13 @@ export function QuestionItem({ number, question }: QuestionItemProps) {
                 <span 
                   style={{
                     color: 'var(--Text-Primary, #303030)',
-                    fontFamily: 'Inter',
+                    fontFamily: 'var(--font-inter), sans-serif',
                     fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: 400,
-                    lineHeight: '1.5',
+                    lineHeight: '240%',
                     letterSpacing: '-0.64px',
-                    flex: '1 0 0'
+                    flex: 1
                   }}
                 >
                   {option}

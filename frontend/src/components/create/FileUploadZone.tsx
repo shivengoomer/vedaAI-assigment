@@ -431,16 +431,16 @@ export function FileUploadZone({
             </div>
 
             {/* Modal Footer */}
-            <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-sans">
-                <Info className="w-3.5 h-3.5 text-gray-300" />
+            <div className="border-t border-gray-100 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4 w-full">
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-sans justify-center sm:justify-start w-full sm:w-auto">
+                <Info className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" />
                 <span>Showing {filteredLibraryItems.length} of {libraryItems.length} library assets</span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto justify-center sm:justify-end">
                 <button
                   type="button"
                   onClick={() => setShowLibrary(false)}
-                  className="px-5 py-2 text-xs font-bold text-gray-500 hover:text-black hover:bg-gray-100 rounded-full transition-all font-sans border border-gray-150 active:scale-95"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-gray-500 hover:text-black hover:bg-gray-100 rounded-full transition-all font-sans border border-gray-150 active:scale-95 text-center"
                 >
                   Cancel
                 </button>

@@ -12,7 +12,7 @@ interface SectionBlockProps {
 
 export function SectionBlock({ section, questionNumberStart }: SectionBlockProps) {
   return (
-    <div className="flex flex-col gap-4 border-b border-gray-100 pb-6 mb-2">
+    <div className="flex flex-col gap-4 border-b border-gray-100 pb-6 mb-2 w-full text-left">
       
       {/* Centered Section Label */}
       <div className="text-center font-bold text-base tracking-wider text-black">
@@ -30,7 +30,7 @@ export function SectionBlock({ section, questionNumberStart }: SectionBlockProps
       </div>
 
       {/* Numbered Questions List */}
-      <div className="flex flex-col gap-4 pl-1">
+      <div className="flex flex-col gap-2 pl-1 w-full">
         {section.questions.map((q, index) => (
           <QuestionItem
             key={q.id}

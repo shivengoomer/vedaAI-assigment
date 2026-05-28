@@ -1,22 +1,37 @@
 // src/components/layout/Sidebar.tsx
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Settings, Sparkles } from 'lucide-react';
 import { useAssignmentStore } from '@/store/assignmentStore';
-import { listAssignments, setGlobalToken } from '@/lib/api';
-import { UserButton, useUser, useAuth } from '@clerk/nextjs';
+import { listAssignments, listLibraryItems, setGlobalToken } from '@/lib/api';
+import { UserButton, useAuth } from '@clerk/nextjs';
 import { useProfileStore } from '@/store/profileStore';
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { assignments, setAssignments } = useAssignmentStore();
-  const { user } = useUser();
   const { getToken } = useAuth();
   const { profile } = useProfileStore();
+
+  const [libraryCount, setLibraryCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (pathname.startsWith('/library')) {
+      const fetchLibraryCount = async () => {
+        try {
+          const data = await listLibraryItems();
+          setLibraryCount(data.length);
+        } catch (err) {
+          console.error('Failed to fetch library count for sidebar:', err);
+        }
+      };
+      fetchLibraryCount();
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const updateToken = async () => {
@@ -217,8 +232,21 @@ export function Sidebar() {
           }}
           className="w-full hover:scale-[1.02] active:scale-95 transition-all"
         >
-          <Sparkles className="w-4.5 h-4.5 text-[#FF7950] fill-[#FF7950]" />
-          <span className="text-[15px] font-bold text-white font-sans whitespace-nowrap">Create Assignment</span>
+          <Sparkles className="w-4.5 h-4.5 text-white fill-white" />
+          <span
+            style={{
+              color: 'var(--Background-white, #FFF)',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '16px',
+              fontStyle: 'normal',
+              fontWeight: 500,
+              lineHeight: '28px',
+              letterSpacing: '-0.64px',
+            }}
+            className="whitespace-nowrap"
+          >
+            Create Assignment
+          </span>
         </button>
 
         {/* Nav Items */}
@@ -247,7 +275,7 @@ export function Sidebar() {
                 </span>
                 <div className="flex items-center justify-between flex-1">
                   <span>{item.label}</span>
-                  {item.label === 'Assignments' && assignments.length > 0 && (
+                  {item.label === 'Assignments' && pathname.startsWith('/assignments') && assignments.length > 0 && (
                     <span
                       className="text-white text-[12px] font-bold flex items-center justify-center"
                       style={{
@@ -262,6 +290,21 @@ export function Sidebar() {
                       {assignments.length}
                     </span>
                   )}
+                  {item.label === 'My Library' && pathname.startsWith('/library') && libraryCount > 0 && (
+                    <span
+                      className="text-white text-[12px] font-bold flex items-center justify-center"
+                      style={{
+                        borderRadius: '48px',
+                        background: '#FF5623',
+                        boxShadow: '0 0 32.3px 0 rgba(255, 161, 10, 0.25) inset',
+                        padding: '0 10px',
+                        height: '24px',
+                        minWidth: '24px'
+                      }}
+                    >
+                      {libraryCount}
+                    </span>
+                  )}
                 </div>
               </Link>
             );
@@ -270,7 +313,16 @@ export function Sidebar() {
       </div>
 
       {/* Bottom Section - Settings & School Card */}
-      <div className="flex flex-col gap-4 w-full">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: '16px',
+          alignSelf: 'stretch',
+        }}
+        className="w-full"
+      >
         <Link
           href="/settings"
           className={`flex items-center gap-2 rounded-xl text-[16px] transition-all duration-200 ${pathname.startsWith('/settings')
@@ -289,31 +341,94 @@ export function Sidebar() {
           <span>Settings</span>
         </Link>
 
-        {/* School Organization Card */}
-        <div className="p-3 bg-white rounded-2xl border border-veda-card-border flex items-center gap-3 shadow-sm w-full">
-          <div className="w-8 h-8 rounded-full bg-veda-orange text-white flex items-center justify-center font-bold text-xs uppercase flex-shrink-0">
-            {profile?.schoolName ? profile.schoolName.substring(0, 2) : 'DP'}
+        {/* School Organization Card with User Image */}
+        <div
+          style={{
+            display: 'flex',
+            padding: '12px',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '16px',
+            alignSelf: 'stretch',
+          }}
+          className="bg-[#F2F2F2] rounded-2xl border border-veda-card-border shadow-sm w-full"
+        >
+          {/* User Image Button */}
+          <div
+            style={{
+              width: '59px',
+              height: '56px',
+              aspectRatio: '59/56',
+            }}
+            className="flex-shrink-0"
+          >
+            <UserButton
+              appearance={{
+                elements: {
+                  rootBox: "w-full h-full",
+                  userButtonTrigger: "w-full h-full focus:shadow-none focus:outline-none",
+                  userButtonAvatarBox: "w-full h-full rounded-[59px]",
+                  userButtonAvatarImage: "w-full h-full rounded-[59px] object-cover"
+                }
+              }}
+            />
           </div>
-          <div className="flex flex-col min-w-0">
-            <span className="text-xs font-semibold text-veda-text-primary truncate">
-              {profile?.schoolName || 'Delhi Public School'}
-            </span>
-            <span className="text-[10px] text-veda-text-secondary truncate">
-              {profile?.schoolBranch || 'Bokaro Steel City'}
-            </span>
-          </div>
-        </div>
 
-        {/* Clerk User Button and profile details */}
-        <div className="p-3 bg-[#F2F2F2] rounded-2xl border border-veda-card-border flex items-center justify-between gap-3 shadow-sm w-full">
-          <div className="flex items-center gap-3 min-w-0">
-            <UserButton />
-            <div className="flex flex-col min-w-0">
-              <span className="text-sm font-semibold text-veda-text-primary truncate">
-                {user?.fullName || 'John Doe'}
+          {/* School Name & Address */}
+          <div className="flex flex-col min-w-0 flex-1 justify-center">
+            {/* School Name */}
+            <div
+              style={{
+                display: 'flex',
+                height: '22px',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignSelf: 'stretch',
+              }}
+            >
+              <span
+                style={{
+                  overflow: 'hidden',
+                  color: 'var(--Text-Primary, #303030)',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontFamily: '"Bricolage Grotesque", sans-serif',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '140%',
+                  letterSpacing: '-0.64px',
+                }}
+              >
+                {profile?.schoolName || 'Delhi Public School'}
               </span>
-              <span className="text-[10px] text-veda-text-secondary truncate">
-                {user?.primaryEmailAddress?.emailAddress || 'tester@shiven.com'}
+            </div>
+
+            {/* School Address */}
+            <div
+              style={{
+                display: 'flex',
+                height: '22px',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignSelf: 'stretch',
+              }}
+            >
+              <span
+                style={{
+                  overflow: 'hidden',
+                  color: 'var(--Background-bg-dark, #5E5E5E)',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  fontFamily: '"Bricolage Grotesque", sans-serif',
+                  fontSize: '14px',
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '140%',
+                  letterSpacing: '-0.56px',
+                }}
+              >
+                {profile?.schoolBranch || 'Bokaro Steel City'}
               </span>
             </div>
           </div>
